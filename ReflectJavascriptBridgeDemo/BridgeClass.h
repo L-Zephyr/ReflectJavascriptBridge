@@ -13,10 +13,14 @@
 
 - (void)function;
 
+- (void)add:(NSInteger)a b:(NSInteger)b;
+
 @end
 
 @interface BridgeClass : NSObject <BridgeProtocol>
 
 - (void)function;
+
+- (void)add:(NSInteger)a b:(NSInteger)b;
 
 @end

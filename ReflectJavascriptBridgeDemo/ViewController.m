@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "ReflectJavascriptBridge.h"
 #import "BridgeClass.h"
+#import "RJBCommand.h"
 
 @interface ViewController ()<UIWebViewDelegate>
 
@@ -26,6 +27,13 @@
     
     BridgeClass *obj = [[BridgeClass alloc] init];
     _bridge[@"obj"] = obj;
+    
+    NSDictionary *info = @{@"className": @"BridgeClass",
+                           @"identifier": @"1",
+                           @"method": @"add:b:",
+                           @"args": @[@1, @2]};
+    RJBCommand *command = [RJBCommand commandWithDic:info];
+    [command exec:obj];
 }
 
 

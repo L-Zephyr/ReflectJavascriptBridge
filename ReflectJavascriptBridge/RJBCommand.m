@@ -43,7 +43,42 @@
 }
 
 - (void)exec:(id<ReflectBridgeExport>)instance {
+    NSInvocation *invocation = nil;
     
+    SEL selector = NSSelectorFromString(_methodName);
+    NSMethodSignature *sign = [[instance class] instanceMethodSignatureForSelector:selector];
+    if (sign) { // 存在实例方法
+        invocation = [NSInvocation invocationWithMethodSignature:sign];
+        invocation.target = instance;
+    } else { // 否则查找类方法
+        NSMethodSignature *classSign = [[instance class] methodSignatureForSelector:selector];
+        if (classSign) {
+            invocation = [NSInvocation invocationWithMethodSignature:classSign];
+            invocation.target = [instance class];
+        } else {
+            NSLog(@"method '%@' not implement in class '%@'", _methodName, _className);
+            return;
+        }
+    }
+    invocation.selector = selector;
+    
+    // 设置参数
+    if (_args.count != 0) {
+        NSInteger index = 2;
+        for (id arg in _args) {
+            if ([arg isKindOfClass:[NSString class]]) {
+                NSString *param = (NSString *)arg;
+                [invocation setArgument:&param atIndex:index];
+            } else if ([arg isKindOfClass:[NSNumber class]]) {
+                NSNumber *number = (NSNumber *)arg;
+                NSInteger param = [number integerValue];
+                [invocation setArgument:&param atIndex:index];
+            }
+            ++index;
+        }
+    }
+    
+    [invocation invoke];
 }
 
 - (instancetype)initWithClass:(NSString *)className

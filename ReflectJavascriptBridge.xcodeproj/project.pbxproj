@@ -19,6 +19,7 @@
 		BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9151E346CC8009C1C64 /* RJBCommand.m */; };
 		BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */; };
 		BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */; };
+		BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBObjectConvertor.m; sourceTree = "<group>"; };
 		BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeClass.h; sourceTree = "<group>"; };
 		BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgeClass.m; sourceTree = "<group>"; };
+		BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommandTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */,
+				BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */,
 				BBDCD8F31E346BFA009C1C64 /* Info.plist */,
 			);
 			path = ReflectJavascriptBridgeTests;
@@ -270,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */,
 				BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
