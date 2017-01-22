@@ -1,0 +1,31 @@
+//
+//  RJBCommand.h
+//  ReflectJavascriptBridge
+//
+//  Created by LZephyr on 2017/1/22.
+//  Copyright © 2017年 LZephyr. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ReflectBridgeExport.h"
+
+@interface RJBCommand : NSObject
+
+@property (nonatomic) NSString *identifier; // 该command对应的对象实例ID
+
+/**
+ 创建一条指令
+ 
+ @param dic 包含Command所需的所有信息
+ @return    返回创建的待执行的command
+ */
++ (RJBCommand *)commandWithDic:(NSDictionary *)dic;
+
+/**
+ 执行一条指令
+
+ @param instance 执行该指令的实例对象
+ */
+- (void)exec:(id<ReflectBridgeExport>)instance;
+
+@end

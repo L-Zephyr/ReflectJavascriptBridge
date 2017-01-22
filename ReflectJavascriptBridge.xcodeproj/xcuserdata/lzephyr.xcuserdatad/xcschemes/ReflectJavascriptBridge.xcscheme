@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB487DBB1E1D15570093212E"
+               BlueprintIdentifier = "BBDCD8D31E346BFA009C1C64"
                BuildableName = "ReflectJavascriptBridge.app"
                BlueprintName = "ReflectJavascriptBridge"
                ReferencedContainer = "container:ReflectJavascriptBridge.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BB487DCF1E1D15570093212E"
+               BlueprintIdentifier = "BBDCD8EC1E346BFA009C1C64"
                BuildableName = "ReflectJavascriptBridgeTests.xctest"
                BlueprintName = "ReflectJavascriptBridgeTests"
                ReferencedContainer = "container:ReflectJavascriptBridge.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB487DBB1E1D15570093212E"
+            BlueprintIdentifier = "BBDCD8D31E346BFA009C1C64"
             BuildableName = "ReflectJavascriptBridge.app"
             BlueprintName = "ReflectJavascriptBridge"
             ReferencedContainer = "container:ReflectJavascriptBridge.xcodeproj">
@@ -65,7 +65,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB487DBB1E1D15570093212E"
+            BlueprintIdentifier = "BBDCD8D31E346BFA009C1C64"
             BuildableName = "ReflectJavascriptBridge.app"
             BlueprintName = "ReflectJavascriptBridge"
             ReferencedContainer = "container:ReflectJavascriptBridge.xcodeproj">
@@ -84,7 +84,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BB487DBB1E1D15570093212E"
+            BlueprintIdentifier = "BBDCD8D31E346BFA009C1C64"
             BuildableName = "ReflectJavascriptBridge.app"
             BlueprintName = "ReflectJavascriptBridge"
             ReferencedContainer = "container:ReflectJavascriptBridge.xcodeproj">

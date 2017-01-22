@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Reflect.xcscheme</key>
+		<key>ReflectJavascriptBridge.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>BB487DBB1E1D15570093212E</key>
+		<key>BBDCD8D31E346BFA009C1C64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BB487DCF1E1D15570093212E</key>
+		<key>BBDCD8EC1E346BFA009C1C64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
