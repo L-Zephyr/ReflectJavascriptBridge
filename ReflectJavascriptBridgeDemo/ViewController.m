@@ -7,8 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "ReflectJavascriptBridge.h"
+#import "BridgeClass.h"
 
-@interface ViewController ()
+@interface ViewController ()<UIWebViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (nonatomic) ReflectJavascriptBridge *bridge;
 
 @end
 
@@ -17,6 +22,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
+    
+    BridgeClass *obj = [[BridgeClass alloc] init];
+    _bridge[@"obj"] = obj;
 }
 
 

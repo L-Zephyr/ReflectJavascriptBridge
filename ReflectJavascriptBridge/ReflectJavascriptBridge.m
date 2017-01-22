@@ -10,6 +10,7 @@
 #import "ReflectBridgeExport.h"
 #import "RJBObjectConvertor.h"
 #import "RJBCommand.h"
+#import <objc/runtime.h>
 
 static NSString *const ReflectScheme = @"ReflectJavascriptBridge";
 static NSString *const ReflectReadyForMessage = @"_ReadyForCommands_";
@@ -101,6 +102,24 @@ static NSString *const ReflectInjectJs = @"";
         _webView.delegate = self;
     }
     return self;
+}
+
+#pragma mark - Subscript
+
+- (id)objectForKeyedSubscript:(id)key {
+    if ([key isKindOfClass:[NSString class]] == NO) {
+        return nil;
+    }
+    return _reflectObjects[key];
+}
+
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey {
+    if ([object conformsToProtocol:objc_getProtocol("ReflectBridgeExport")] == NO) {
+        NSLog(@"object not conform to protocol ReflectBridgeExport");
+        return;
+    }
+    _reflectObjects[aKey] = object;
+    [self bridgeObjectToJs:object name:(NSString *)aKey];
 }
 
 #pragma mark - UIWebViewDelegate
