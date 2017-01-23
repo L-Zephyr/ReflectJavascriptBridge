@@ -45,7 +45,7 @@
         NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // js方法名到native方法名的映射
         NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
         [_js appendFormat:@"className:\"%@\",", clsName];
-        [_js appendFormat:@"identifier:%@,", identifier];
+        [_js appendFormat:@"identifier:\"%@\",", identifier];
         
         for (NSString *nativeMethod in methods) {
             NSArray *methodInfo = [self convertNativeMethodToJs:nativeMethod];
