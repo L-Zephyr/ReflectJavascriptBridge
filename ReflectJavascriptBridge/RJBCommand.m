@@ -71,8 +71,20 @@
                 [invocation setArgument:&param atIndex:index];
             } else if ([arg isKindOfClass:[NSNumber class]]) {
                 NSNumber *number = (NSNumber *)arg;
-                NSInteger param = [number integerValue];
-                [invocation setArgument:&param atIndex:index];
+                const char *type = [number objCType];
+                if (strcmp(type, @encode(double)) == 0) {
+                    double param = [number doubleValue];
+                    [invocation setArgument:&param atIndex:index];
+                } else if (strcmp(type, @encode(int)) == 0) {
+                    NSInteger param = [number integerValue];
+                    [invocation setArgument:&param atIndex:index];
+                } else if (strcmp(type, @encode(BOOL)) == 0) {
+                    BOOL param = [number boolValue];
+                    [invocation setArgument:&param atIndex:index];
+                } else {
+                    double param = [number doubleValue];
+                    [invocation setArgument:&param atIndex:index];
+                }
             }
             ++index;
         }
