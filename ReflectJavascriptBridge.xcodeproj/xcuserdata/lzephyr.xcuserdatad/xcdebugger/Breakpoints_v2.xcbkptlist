@@ -38,7 +38,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ReflectJavascriptBridge/RJBCommand.m"
@@ -102,7 +102,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ReflectJavascriptBridge/ReflectJavascriptBridge.m"
@@ -182,7 +182,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ReflectJavascriptBridge/ReflectJavascriptBridge.m"
@@ -195,14 +195,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[ReflectJavascriptBridge execCommands]"
                   moduleName = "ReflectJavascriptBridge"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lzephyr/Desktop/code/github/ReflectJavascriptBridge/ReflectJavascriptBridge/ReflectJavascriptBridge.m"
-                  timestampString = "506856497.482099"
+                  timestampString = "506856760.263604"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "92"
@@ -210,14 +210,14 @@
                   offsetFromSymbolStart = "103">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[ReflectJavascriptBridge execCommands]"
                   moduleName = "ReflectJavascriptBridge"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lzephyr/Desktop/code/github/ReflectJavascriptBridge/ReflectJavascriptBridge/ReflectJavascriptBridge.m"
-                  timestampString = "506856497.483437"
+                  timestampString = "506856760.264872"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "92"
@@ -256,6 +256,54 @@
             startingLineNumber = "94"
             endingLineNumber = "94"
             landmarkName = "-execCommands"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ReflectJavascriptBridge/RJBObjectConvertor.m"
+            timestampString = "506873512.605642"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "-initWithObject:idenetifier:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ReflectJavascriptBridge/RJBObjectConvertor.m"
+            timestampString = "506873545.720063"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "-initWithObject:idenetifier:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ReflectJavascriptBridge/RJBObjectConvertor.m"
+            timestampString = "506873560.287342"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "-initWithObject:idenetifier:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -52,7 +52,7 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
             var command = {
                 "className": objc["className"], // 这个是Export的类名
                 "identifier": objc["identifier"], // 唯一的ID,这个ID是实例对象的名称
-                "method": method, // 调用的方法名
+                "method": objc.maps[method], // 调用的方法名
                 "args": args // 参数
             };
             commandQueue.push(command);

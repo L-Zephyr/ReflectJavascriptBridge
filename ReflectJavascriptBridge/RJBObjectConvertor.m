@@ -54,7 +54,7 @@
             NSString *methodBody = [self jsMethodBodyWithName:methodName];
             
             [_js appendFormat:@"%@:function(%@){%@},", methodName, methodParam, methodBody];
-            [methodMaps setObject:methodName forKey:nativeMethod];
+            [methodMaps setObject:nativeMethod forKey:methodName];
         }
         
         NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
@@ -99,7 +99,7 @@
 }
 
 - (NSString *)jsMethodBodyWithName:(NSString *)methodName {
-    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", arguments);", methodName];
+    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", Array.from(arguments));", methodName];
 }
 
 /**
