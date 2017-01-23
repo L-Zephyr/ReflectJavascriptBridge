@@ -35,9 +35,9 @@
         return nil;
     }
     // TODO: 暂时只考虑实例方法
-    if (class_respondsToSelector(cls, NSSelectorFromString(method)) == NO) {
-        return nil;
-    }
+//    if (class_respondsToSelector(cls, NSSelectorFromString(method)) == NO) {
+//        return nil;
+//    }
     
     return [[RJBCommand alloc] initWithClass:clsName method:method identifier:identifier args:args];
 }

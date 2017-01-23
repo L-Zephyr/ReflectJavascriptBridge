@@ -20,6 +20,7 @@
 		BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */; };
 		BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */; };
 		BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */; };
+		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +49,6 @@
 		BBDCD9081E346C21009C1C64 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		BBDCD9101E346C30009C1C64 /* ReflectJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflectJavascriptBridge.h; sourceTree = "<group>"; };
 		BBDCD9111E346C30009C1C64 /* ReflectJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReflectJavascriptBridge.m; sourceTree = "<group>"; };
-		BBDCD9131E346CAB009C1C64 /* ReflectBridgeExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflectBridgeExport.h; sourceTree = "<group>"; };
 		BBDCD9141E346CC8009C1C64 /* RJBCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBCommand.h; sourceTree = "<group>"; };
 		BBDCD9151E346CC8009C1C64 /* RJBCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommand.m; sourceTree = "<group>"; };
 		BBDCD9171E346CD9009C1C64 /* RJBObjectConvertor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBObjectConvertor.h; sourceTree = "<group>"; };
@@ -56,6 +56,8 @@
 		BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeClass.h; sourceTree = "<group>"; };
 		BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgeClass.m; sourceTree = "<group>"; };
 		BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommandTest.m; sourceTree = "<group>"; };
+		BBDCD9251E35F15C009C1C64 /* RJBCommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBCommons.h; sourceTree = "<group>"; };
+		BBDCD9261E35F15C009C1C64 /* RJBCommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommons.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,11 +112,12 @@
 			children = (
 				BBDCD9101E346C30009C1C64 /* ReflectJavascriptBridge.h */,
 				BBDCD9111E346C30009C1C64 /* ReflectJavascriptBridge.m */,
-				BBDCD9131E346CAB009C1C64 /* ReflectBridgeExport.h */,
 				BBDCD9141E346CC8009C1C64 /* RJBCommand.h */,
 				BBDCD9151E346CC8009C1C64 /* RJBCommand.m */,
 				BBDCD9171E346CD9009C1C64 /* RJBObjectConvertor.h */,
 				BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */,
+				BBDCD9251E35F15C009C1C64 /* RJBCommons.h */,
+				BBDCD9261E35F15C009C1C64 /* RJBCommons.m */,
 			);
 			path = ReflectJavascriptBridge;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */,
+				BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */,
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
 				BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */,
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,

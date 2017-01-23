@@ -28,12 +28,15 @@
     BridgeClass *obj = [[BridgeClass alloc] init];
     _bridge[@"obj"] = obj;
     
-    NSDictionary *info = @{@"className": @"BridgeClass",
-                           @"identifier": @"1",
-                           @"method": @"add:b:",
-                           @"args": @[@1, @2]};
-    RJBCommand *command = [RJBCommand commandWithDic:info];
-    [command exec:obj];
+//    NSDictionary *info = @{@"className": @"BridgeClass",
+//                           @"identifier": @"1",
+//                           @"method": @"classFunction",
+//                           @"args": @[]};
+//    RJBCommand *command = [RJBCommand commandWithDic:info];
+//    [command exec:obj];
+    
+    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
+    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
 
@@ -42,5 +45,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)refreshWebView:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
+    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+}
 
 @end

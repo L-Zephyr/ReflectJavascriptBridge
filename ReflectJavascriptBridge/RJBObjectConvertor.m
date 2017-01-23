@@ -17,12 +17,12 @@
 
 @implementation RJBObjectConvertor
 
-+ (NSString *)convertToJs:(id<ReflectBridgeExport>)object moduleId:(NSUInteger)moduleId {
-    RJBObjectConvertor *convertor = [[RJBObjectConvertor alloc] initWithObject:object moduleId:moduleId];
++ (NSString *)convertToJs:(id<ReflectBridgeExport>)object identifier:(NSString *)identifier {
+    RJBObjectConvertor *convertor = [[RJBObjectConvertor alloc] initWithObject:object idenetifier:identifier];
     return [convertor toJs];
 }
 
-- (instancetype)initWithObject:(id<ReflectBridgeExport>)object moduleId:(NSUInteger)moduleId {
+- (instancetype)initWithObject:(id<ReflectBridgeExport>)object idenetifier:(NSString *)identifier {
     self = [super init];
     if (self) {
         _js = [[NSMutableString alloc] init];
@@ -43,9 +43,9 @@
         NSArray<NSString *> *methods = [self fetchMethodsFromProtocols:exportProtocols];
         
         NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // js方法名到native方法名的映射
-        NSString *moduleName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
-        [_js appendFormat:@"moduleName:\"%@\",", moduleName];
-        [_js appendFormat:@"moduleId:%lu,", (unsigned long)moduleId];
+        NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
+        [_js appendFormat:@"className:\"%@\",", clsName];
+        [_js appendFormat:@"identifier:%@,", identifier];
         
         for (NSString *nativeMethod in methods) {
             NSArray *methodInfo = [self convertNativeMethodToJs:nativeMethod];

@@ -7,22 +7,24 @@
 //
 
 #import "ReflectJavascriptBridge.h"
-#import "ReflectBridgeExport.h"
+#import "RJBCommons.h"
 #import "RJBObjectConvertor.h"
 #import "RJBCommand.h"
 #import <objc/runtime.h>
 
-static NSString *const ReflectScheme = @"ReflectJavascriptBridge";
+static NSString *const ReflectScheme = @"reflectjavascriptbridge";
 static NSString *const ReflectReadyForMessage = @"_ReadyForCommands_";
-static NSString *const ReflectInjectJs = @"";
+static NSString *const ReflectInjectJs = @"_InjectJs_";
 
-@interface ReflectJavascriptBridge()<UIWebViewDelegate>
+@interface ReflectJavascriptBridge() <UIWebViewDelegate>
 
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
+@property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *waitingObjects; // wait for bridge
 @property (nonatomic) NSMutableArray<RJBCommand *> *commands;
-@property (nonatomic) NSUInteger uniqueModuleId;
+//@property (nonatomic) NSUInteger uniqueModuleId;
 @property (nonatomic) id<UIWebViewDelegate> delegate;
 @property (nonatomic) UIWebView *webView;
+@property (nonatomic) BOOL injectJsFinished;
 
 @end
 
@@ -44,8 +46,8 @@ static NSString *const ReflectInjectJs = @"";
  @param name 实例名称
  */
 - (void)bridgeObjectToJs:(id<ReflectBridgeExport>)obj name:(NSString *)name {
-    NSString *jsObj = [self convertNativeObjectToJs:obj];
-    NSString *js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.addObject(%@,%@);", jsObj, name];
+    NSString *jsObj = [self convertNativeObjectToJs:obj identifier:name];
+    NSString *js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.addObject(%@,\"%@\");", jsObj, name];
     [_webView stringByEvaluatingJavaScriptFromString:js];
 }
 
@@ -55,9 +57,8 @@ static NSString *const ReflectInjectJs = @"";
  @param object native对象实例
  @return       一段描述JS对象的JS代码
  */
-- (NSString *)convertNativeObjectToJs:(id<ReflectBridgeExport>)object {
-    NSString *jsObject = [RJBObjectConvertor convertToJs:object moduleId:_uniqueModuleId];
-    ++_uniqueModuleId;
+- (NSString *)convertNativeObjectToJs:(id<ReflectBridgeExport>)object identifier:(NSString *)identifier {
+    NSString *jsObject = [RJBObjectConvertor convertToJs:object identifier:identifier];
     return jsObject;
 }
 
@@ -91,8 +92,23 @@ static NSString *const ReflectInjectJs = @"";
     for (RJBCommand *command in _commands) {
         [command exec:_reflectObjects[command.identifier]];
     }
-    // TODO: 执行结束清空commands
+    // TODO: 执行结束清空commands, 暂时先同步执行
+    [_commands removeAllObjects];
 }
+
+/**
+ 向webView中注入JS代码
+ */
+- (void)injectJs {
+    [_webView stringByEvaluatingJavaScriptFromString:ReflectJavascriptBridgeInjectedJS()];
+    _injectJsFinished = YES;
+    [_waitingObjects enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id<ReflectBridgeExport>  _Nonnull obj, BOOL * _Nonnull stop) {
+        [self setObject:obj forKeyedSubscript:key];
+    }];
+    [_waitingObjects removeAllObjects];
+}
+
+#pragma mark - Initialize
 
 - (instancetype)initWithWebView:(UIWebView *)webView delegate:(id<UIWebViewDelegate>)delegate {
     self = [super init];
@@ -100,6 +116,9 @@ static NSString *const ReflectInjectJs = @"";
         _webView = webView;
         _delegate = delegate;
         _webView.delegate = self;
+        _reflectObjects = [NSMutableDictionary dictionary];
+        _waitingObjects = [NSMutableDictionary dictionary];
+        _commands = [NSMutableArray array];
     }
     return self;
 }
@@ -113,13 +132,18 @@ static NSString *const ReflectInjectJs = @"";
     return _reflectObjects[key];
 }
 
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey {
+- (void)setObject:(id<ReflectBridgeExport>)object forKeyedSubscript:(id<NSCopying>)aKey {
     if ([object conformsToProtocol:objc_getProtocol("ReflectBridgeExport")] == NO) {
         NSLog(@"object not conform to protocol ReflectBridgeExport");
         return;
     }
-    _reflectObjects[aKey] = object;
-    [self bridgeObjectToJs:object name:(NSString *)aKey];
+    
+    if (_injectJsFinished) {
+        _reflectObjects[aKey] = object;
+        [self bridgeObjectToJs:object name:(NSString *)aKey];
+    } else {
+        _waitingObjects[aKey] = object;
+    }
 }
 
 #pragma mark - UIWebViewDelegate
@@ -145,7 +169,7 @@ static NSString *const ReflectInjectJs = @"";
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if ([request.URL.scheme isEqualToString:ReflectScheme]) {
         if ([request.URL.host isEqualToString:ReflectInjectJs]) {
-            // TODO:注入JS代码
+            [self injectJs];
         } else if ([request.URL.host isEqualToString:ReflectReadyForMessage]) {
             [self fetchQueueingCommands];
         }

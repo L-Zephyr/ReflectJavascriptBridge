@@ -11,6 +11,8 @@
 
 @protocol BridgeProtocol <ReflectBridgeExport>
 
++ (void)classFunction;
+
 - (void)function;
 
 - (void)add:(NSInteger)a b:(NSInteger)b;
@@ -18,6 +20,8 @@
 @end
 
 @interface BridgeClass : NSObject <BridgeProtocol>
+
++ (void)classFunction;
 
 - (void)function;
 

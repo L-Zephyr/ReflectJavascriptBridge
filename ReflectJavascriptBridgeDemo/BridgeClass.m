@@ -10,6 +10,10 @@
 
 @implementation BridgeClass
 
++ (void)classFunction {
+    NSLog(@"call class function");
+}
+
 - (void)function {
     NSLog(@"call function");
 }

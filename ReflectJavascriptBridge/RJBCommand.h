@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ReflectBridgeExport.h"
+#import "RJBCommons.h"
 
 @interface RJBCommand : NSObject
 

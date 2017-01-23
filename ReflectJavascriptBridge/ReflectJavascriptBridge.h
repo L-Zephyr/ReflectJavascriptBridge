@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ReflectBridgeExport.h"
+#import "RJBCommons.h"
 
 @interface ReflectJavascriptBridge : NSObject
 
@@ -17,6 +17,6 @@
 + (ReflectJavascriptBridge *)bridge:(UIWebView *)webView;
 
 - (id)objectForKeyedSubscript:(id)key;
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey;
+- (void)setObject:(id<ReflectBridgeExport>)object forKeyedSubscript:(id<NSCopying>)aKey;
 
 @end
