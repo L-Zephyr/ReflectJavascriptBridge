@@ -39,6 +39,10 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
     return [ReflectJavascriptBridge bridge:webView delegate:nil];
 }
 
+- (NSString *)callJs:(NSString *)js {
+    return [_webView stringByEvaluatingJavaScriptFromString:js];
+}
+
 /**
  向JS中注册一个Native对象
 
@@ -175,6 +179,11 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
         }
         return NO;
     }
+    
+    if ([_delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        return [_delegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    }
+    
     return YES;
 }
 
