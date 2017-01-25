@@ -12,7 +12,6 @@
 		BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9001E346C21009C1C64 /* Assets.xcassets */; };
 		BBDCD90B1E346C21009C1C64 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9011E346C21009C1C64 /* LaunchScreen.storyboard */; };
 		BBDCD90C1E346C21009C1C64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9031E346C21009C1C64 /* Main.storyboard */; };
-		BBDCD90D1E346C21009C1C64 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9051E346C21009C1C64 /* Info.plist */; };
 		BBDCD90E1E346C21009C1C64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9061E346C21009C1C64 /* main.m */; };
 		BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9081E346C21009C1C64 /* ViewController.m */; };
 		BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9111E346C30009C1C64 /* ReflectJavascriptBridge.m */; };
@@ -21,6 +20,8 @@
 		BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */; };
 		BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */; };
 		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
+		BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* SecondViewController.m */; };
+		BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* SecondViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,9 @@
 		BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommandTest.m; sourceTree = "<group>"; };
 		BBDCD9251E35F15C009C1C64 /* RJBCommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBCommons.h; sourceTree = "<group>"; };
 		BBDCD9261E35F15C009C1C64 /* RJBCommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommons.m; sourceTree = "<group>"; };
+		BBDCD9301E388039009C1C64 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		BBDCD9311E388039009C1C64 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		BBDCD9321E388039009C1C64 /* SecondViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecondViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +134,9 @@
 				BBDCD9071E346C21009C1C64 /* ViewController.h */,
 				BBDCD9081E346C21009C1C64 /* ViewController.m */,
 				BBDCD9031E346C21009C1C64 /* Main.storyboard */,
+				BBDCD9301E388039009C1C64 /* SecondViewController.h */,
+				BBDCD9311E388039009C1C64 /* SecondViewController.m */,
+				BBDCD9321E388039009C1C64 /* SecondViewController.xib */,
 				BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */,
 				BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */,
 				BBDCD9051E346C21009C1C64 /* Info.plist */,
@@ -225,7 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBDCD90D1E346C21009C1C64 /* Info.plist in Resources */,
+				BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */,
 				BBDCD90C1E346C21009C1C64 /* Main.storyboard in Resources */,
 				BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */,
 				BBDCD90B1E346C21009C1C64 /* LaunchScreen.storyboard in Resources */,
@@ -262,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */,
 				BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */,
 				BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */,
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
