@@ -56,9 +56,7 @@
 }
 
 - (IBAction)buttonPressed:(id)sender {
-//    [_bridge callMethod:@"func" withArgs:nil];
-    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
-    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [_bridge callMethod:@"jsFunc" withArgs:@[@1, @2]];
 }
 
 @end

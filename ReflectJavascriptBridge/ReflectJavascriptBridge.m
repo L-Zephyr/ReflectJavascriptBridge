@@ -67,8 +67,8 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
     
     NSString *js = nil;
     if (paramStr.length > 0) {
-        paramStr = [[paramStr substringToIndex:paramStr.length - 1] mutableCopy]; // FIXME:
-        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\",%@);", methodName, paramStr];
+        NSString *param = [paramStr substringToIndex:paramStr.length - 1]; // TODO: 去掉最后一个逗号
+        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\",[%@]);", methodName, param];
     } else {
         js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\");", methodName];
     }

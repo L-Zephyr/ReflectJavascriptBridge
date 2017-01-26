@@ -45,7 +45,7 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         function checkAndCall(methodName, args) {
             var method = window.ReflectJavascriptBridge[methodName];
             if (method && typeof method === 'function') {
-                window.ReflectJavascriptBridge[method].apply(null, args);
+                method.apply(null, args);
             }
         }
         
