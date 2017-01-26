@@ -11,20 +11,28 @@
 
 @protocol BridgeProtocol <ReflectBridgeExport>
 
+@property (nonatomic) NSString *name;
+@property (nonatomic) BOOL success;
+@property (nonatomic) NSInteger age;
+
 + (void)classFunction;
 
 - (void)function;
 
-- (void)add:(NSInteger)a b:(NSInteger)b;
+- (NSInteger)add:(NSInteger)a b:(NSInteger)b;
 
 @end
 
 @interface BridgeClass : NSObject <BridgeProtocol>
 
+@property (nonatomic) NSString *name;
+@property (nonatomic) BOOL success;
+@property (nonatomic) NSInteger age;
+
 + (void)classFunction;
 
 - (void)function;
 
-- (void)add:(NSInteger)a b:(NSInteger)b;
+- (NSInteger)add:(NSInteger)a b:(NSInteger)b;
 
 @end

@@ -40,21 +40,47 @@
         }
         
         // 获取方法名
-        NSArray<NSString *> *methods = [self fetchMethodsFromProtocols:exportProtocols];
+        NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
+        // 获取属性名
+//        NSArray<NSString *> *properties = [self fetchPropertiesFromProtocols:exportProtocols];
         
         NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // js方法名到native方法名的映射
         NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
         [_js appendFormat:@"className:\"%@\",", clsName];
         [_js appendFormat:@"identifier:\"%@\",", identifier];
         
-        for (NSString *nativeMethod in methods) {
-            NSArray *methodInfo = [self convertNativeMethodToJs:nativeMethod];
-            NSString *methodName = methodInfo.firstObject;
-            NSString *methodParam = methodInfo.count > 1 ? methodInfo[1] : nil;
-            NSString *methodBody = [self jsMethodBodyWithName:methodName];
+        // 添加js属性
+//        for (NSString *propertyName in properties) {
+//            id value = [(NSObject *)object valueForKey:propertyName];
+//            if (!value) {
+//                continue;
+//            }
+//            
+//            [_js appendFormat:@"%@:", propertyName];
+//            if ([value isKindOfClass:[NSString class]]) {
+//                [_js appendFormat:@"\"%@\",", (NSString *)value];
+//            } else if ([value isKindOfClass:[NSNumber class]]) {
+//                NSNumber *number = (NSNumber *)value;
+//                if (strcmp([number objCType], @encode(double)) == 0 || strcmp([number objCType], @encode(float)) == 0) {
+//                    [_js appendFormat:@"%g", [number doubleValue]];
+//                } else {
+//                    [_js appendFormat:@"%ld,", [number integerValue]];
+//                }
+//            } else {
+//                NSLog(@"property bridge not support class %s", class_getName([value class]));
+//            }
+//        }
+        
+        // 添加js方法
+        for (NSDictionary *nativeMethodInfo in methodInfos) {
+            NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodInfo[@"name"]];
+            NSString *returnType = nativeMethodInfo[@"returnType"];
+            NSString *methodName = jsMethodInfo[@"name"];
+            NSString *methodParam = jsMethodInfo[@"paramStr"];
+            NSString *methodBody = [self jsMethodBodyWithName:methodName returnType:returnType];
             
             [_js appendFormat:@"%@:function(%@){%@},", methodName, methodParam, methodBody];
-            [methodMaps setObject:nativeMethod forKey:methodName];
+            [methodMaps setObject:nativeMethodInfo[@"name"] forKey:methodName];
         }
         
         NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
@@ -74,13 +100,13 @@
 #pragma mark - Helper
 
 /**
- 获取协议中定义的所有方法的名称
+ 获取协议中定义的所有方法的名称和返回值类型
 
  @param protoList 包含Protocol的数组
- @return          方法名数组
+ @return          方法信息数组，包含两个key: name和returnType
  */
-- (NSArray<NSString *> *)fetchMethodsFromProtocols:(NSArray<Protocol *> *)protoList {
-    NSMutableArray<NSString *> *methods = [NSMutableArray array];
+- (NSArray<NSDictionary *> *)fetchMethodInfosFromProtocols:(NSArray<Protocol *> *)protoList {
+    NSMutableArray<NSDictionary *> *methods = [NSMutableArray array];
     for(Protocol *proto in protoList) {
         NSArray *isRequire = @[@(YES), @(YES), @(NO), @(NO)];
         NSArray *isInstance = @[@(YES), @(NO), @(YES), @(NO)];
@@ -91,27 +117,50 @@
             
             for (int desIndex = 0; desIndex < count; ++desIndex) {
                 struct objc_method_description des = desList[desIndex];
-                [methods addObject:[NSString stringWithUTF8String:sel_getName(des.name)]];
+                NSString *methodName = [NSString stringWithUTF8String:sel_getName(des.name)];
+                NSString *returnType = [[NSString stringWithUTF8String:des.types] substringWithRange:NSMakeRange(0, 1)];
+                [methods addObject:@{@"name": methodName, @"returnType": returnType}];
             }
+            free(desList);
         }
     }
     return [methods copy];
 }
 
-- (NSString *)jsMethodBodyWithName:(NSString *)methodName {
-    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", Array.from(arguments));", methodName];
+/**
+ 获取协议中的所有属性名
+
+ @param protoList 包含Protocol的数组
+ @return          属性名数组
+ */
+- (NSArray<NSString *> *)fetchPropertiesFromProtocols:(NSArray<Protocol *> *)protoList {
+    NSMutableArray<NSString *> *properties = [NSMutableArray array];
+    for (Protocol *proto in protoList) {
+        unsigned int count = 0;
+        objc_property_t *propertyList = protocol_copyPropertyList(proto, &count);
+        for (int index = 0; index < count; ++index) {
+            objc_property_t property = propertyList[index];
+            [properties addObject:[NSString stringWithUTF8String:property_getName(property)]];
+        }
+        free(propertyList);
+    }
+    return [properties copy];
+}
+
+- (NSString *)jsMethodBodyWithName:(NSString *)methodName returnType:(NSString *)returnType {
+    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", Array.from(arguments),'%@');", methodName, returnType];
 }
 
 /**
  返回转换后的JS方法名和参数
 
  @param nativeMethod native方法名
- @return 数组类型，包含JS方法名和参数(如果有参数)
+ @return 返回一个字典，包括两个key: `name`和`paramStr`
  */
-- (NSArray<NSString *> *)convertNativeMethodToJs:(NSString *)nativeMethod {
+- (NSDictionary *)convertNativeMethodToJs:(NSString *)nativeMethod {
     NSArray<NSString *> *componenet = [nativeMethod componentsSeparatedByString:@":"];
     if (componenet.count == 0) {
-        return @[nativeMethod];
+        return @{@"name": nativeMethod};
     }
     
     NSMutableString *methodName = [NSMutableString string];
@@ -134,7 +183,7 @@
         }
     }
     
-    return @[methodName, paramStr];
+    return @{@"name": methodName, @"paramStr": paramStr};
 }
 
 /**

@@ -18,8 +18,9 @@
     NSLog(@"call function");
 }
 
-- (void)add:(NSInteger)a b:(NSInteger)b {
+- (NSInteger)add:(NSInteger)a b:(NSInteger)b {
     NSLog(@"%ld add %ld = %ld", a, b, a + b);
+    return a+b;
 }
 
 @end

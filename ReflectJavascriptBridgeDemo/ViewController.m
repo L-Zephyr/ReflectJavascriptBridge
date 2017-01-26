@@ -50,7 +50,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"second";
+        cell.textLabel.text = @"interacting with js";
     }
     return cell;
 }

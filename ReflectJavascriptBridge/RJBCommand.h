@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RJBCommons.h"
+#import "ReflectJavascriptBridge.h"
 
 @interface RJBCommand : NSObject
 
@@ -26,6 +27,6 @@
 
  @param instance 执行该指令的实例对象
  */
-- (void)exec:(id<ReflectBridgeExport>)instance;
+- (void)execWithInstance:(id<ReflectBridgeExport>)instance bridge:(ReflectJavascriptBridge *)bridge;
 
 @end

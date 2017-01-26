@@ -22,33 +22,37 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         addObject: addObject,
         dequeueCommandQueue: dequeueCommandQueue,
         sendCommand: sendCommand,
-        checkAndCall: checkAndCall
+        checkAndCall: checkAndCall,
+        callback: callback
         };
         
         var nativeObjects = [];
         var commandQueue = [];
+        var responseCallbacks = [];
+        var uniqueCallbackId = 0;
         var iFrame;
         var requestMessage = "ReflectJavascriptBridge://_ReadyForCommands_";
         
         if (window.RJBRegisteredFunctions) {
             var index;
             for (index in window.RJBRegisteredFunctions) {
-                var funcInfo = window.RJBRegisteredFunctions[index]
+                var funcInfo = window.RJBRegisteredFunctions[index];
                 window.ReflectJavascriptBridge[funcInfo.name] = funcInfo.func;
             }
             delete window.RJBRegisteredFunctions;
-        }
-        
-        var proxyHandler = {
-        set: function(target, property, value, receiver) {
-            target[property] = value;
-        }
         }
         
         function checkAndCall(methodName, args) {
             var method = window.ReflectJavascriptBridge[methodName];
             if (method && typeof method === 'function') {
                 window.ReflectJavascriptBridge[method].apply(null, args);
+            }
+        }
+        
+        function callback(callbackId, returnValue) {
+            if (responseCallbacks[callbackId]) {
+                responseCallbacks[callbackId](returnValue);
+                delete responseCallbacks[callbackId];
             }
         }
         
@@ -71,12 +75,20 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         }
         
         // 添加一条command并通知native
-        function sendCommand(objc, method, args) {
+        function sendCommand(objc, method, args, returnType) {
+            var callback = args[args.length - 1];
+            var callbackId = uniqueCallbackId;
+            if (returnType != 'v' && typeof callback === 'function') {
+                responseCallbacks[callbackId] = callback;
+                ++uniqueCallbackId;
+            }
             var command = {
                 "className": objc["className"], // 这个是Export的类名
                 "identifier": objc["identifier"], // 唯一的ID,这个ID是实例对象的名称
                 "method": objc.maps[method], // 调用的方法名
-                "args": args // 参数
+                "args": args, // 参数
+                "returnType": returnType, // 返回值类型
+                "callbackId": callbackId
             };
             commandQueue.push(command);
             sendReadyToNative();

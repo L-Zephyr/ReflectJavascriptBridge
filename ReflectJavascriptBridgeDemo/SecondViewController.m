@@ -33,6 +33,9 @@
     _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
     
     BridgeClass *obj = [[BridgeClass alloc] init];
+    obj.name = @"wind";
+    obj.age = 18;
+    obj.success = YES;
     _bridge[@"obj"] = obj;
 //    _bridge[@"navBar"] = self; // 这里有循环引用
     
@@ -53,7 +56,9 @@
 }
 
 - (IBAction)buttonPressed:(id)sender {
-    [_bridge callMethod:@"func" withArgs:nil];
+//    [_bridge callMethod:@"func" withArgs:nil];
+    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
+    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
 @end
