@@ -98,7 +98,7 @@
     [invocation invoke];
     
     // 接收返回值
-    if (![_returnType isEqualToString:@"v"]) {
+    if (![_returnType isEqualToString:@"v"] && _callbackId != nil) {
         NSString *value = nil;
         if ([_returnType isEqualToString:@"@"]) {
             id ret = nil;

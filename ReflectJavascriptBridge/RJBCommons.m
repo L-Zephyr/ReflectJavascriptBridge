@@ -76,20 +76,20 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         
         // 添加一条command并通知native
         function sendCommand(objc, method, args, returnType) {
-            var callback = args[args.length - 1];
-            var callbackId = uniqueCallbackId;
-            if (returnType != 'v' && typeof callback === 'function') {
-                responseCallbacks[callbackId] = callback;
-                ++uniqueCallbackId;
-            }
             var command = {
                 "className": objc["className"], // 这个是Export的类名
                 "identifier": objc["identifier"], // 唯一的ID,这个ID是实例对象的名称
                 "method": objc.maps[method], // 调用的方法名
                 "args": args, // 参数
-                "returnType": returnType, // 返回值类型
-                "callbackId": callbackId
+                "returnType": returnType // 返回值类型
             };
+            
+            var lastArg = args[args.length - 1];
+            if (returnType != 'v' && typeof lastArg === 'function') {
+                responseCallbacks[uniqueCallbackId] = lastArg;
+                command["callbackId"] = uniqueCallbackId;
+                ++uniqueCallbackId;
+            }
             commandQueue.push(command);
             sendReadyToNative();
         }
