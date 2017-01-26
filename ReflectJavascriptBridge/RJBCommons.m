@@ -21,13 +21,36 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         window.ReflectJavascriptBridge = {
         addObject: addObject,
         dequeueCommandQueue: dequeueCommandQueue,
-        sendCommand: sendCommand
+        sendCommand: sendCommand,
+        checkAndCall: checkAndCall
         };
         
         var nativeObjects = [];
         var commandQueue = [];
         var iFrame;
         var requestMessage = "ReflectJavascriptBridge://_ReadyForCommands_";
+        
+        if (window.RJBRegisteredFunctions) {
+            var index;
+            for (index in window.RJBRegisteredFunctions) {
+                var funcInfo = window.RJBRegisteredFunctions[index]
+                window.ReflectJavascriptBridge[funcInfo.name] = funcInfo.func;
+            }
+            delete window.RJBRegisteredFunctions;
+        }
+        
+        var proxyHandler = {
+        set: function(target, property, value, receiver) {
+            target[property] = value;
+        }
+        }
+        
+        function checkAndCall(methodName, args) {
+            var method = window.ReflectJavascriptBridge[methodName];
+            if (method && typeof method === 'function') {
+                window.ReflectJavascriptBridge[method].apply(null, args);
+            }
+        }
         
         // 用json描述一个对象，name为变量的命名
         function addObject(objc, name) {

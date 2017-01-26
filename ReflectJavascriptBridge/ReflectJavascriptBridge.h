@@ -37,6 +37,15 @@
  */
 - (NSString *)callJs:(NSString *)js;
 
+/**
+ 根据名字调用JS中的方法，并指定任意数量的参数，该方法需在JS代码中注册
+
+ @param methodName 在JS中注册的方法的名称
+ @param args       任意数量的参数
+ @return           执行结果，如果尚未完成初始化则返回nil
+ */
+- (NSString *)callMethod:(NSString *)methodName withArgs:(NSArray *)args;
+
 // Subscript
 - (id)objectForKeyedSubscript:(id)key;
 - (void)setObject:(id<ReflectBridgeExport>)object forKeyedSubscript:(id<NSCopying>)aKey;

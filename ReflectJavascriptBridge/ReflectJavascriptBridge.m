@@ -21,7 +21,6 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *waitingObjects; // wait for bridge
 @property (nonatomic) NSMutableArray<RJBCommand *> *commands;
-//@property (nonatomic) NSUInteger uniqueModuleId;
 @property (nonatomic) id<UIWebViewDelegate> delegate;
 @property (nonatomic) UIWebView *webView;
 @property (nonatomic) BOOL injectJsFinished;
@@ -40,6 +39,41 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 }
 
 - (NSString *)callJs:(NSString *)js {
+    return [_webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (NSString *)callMethod:(NSString *)methodName withArgs:(NSArray *)args {
+    if (!_injectJsFinished) {
+        NSLog(@"javascript initialize not complete!");
+        return nil;
+    }
+    
+    NSMutableString *paramStr = [NSMutableString string];
+    for (id param in args) {
+        if ([param isKindOfClass:[NSString class]]) {
+            [paramStr appendFormat:@"\"%@\",", (NSString *)param];
+        } else if ([param isKindOfClass:[NSNumber class]]) {
+            NSNumber *number = (NSNumber *)param;
+            const char *type = [number objCType];
+            if (strcmp(type, @encode(double)) == 0) {
+                [paramStr appendFormat:@"%g,", [number doubleValue]];
+            } else if (strcmp(type, @encode(BOOL)) == 0) {
+                [paramStr appendFormat:@"%@,", [number boolValue] ? @"true" : @"false"];
+            } else {
+                [paramStr appendFormat:@"%ld,", [number integerValue]];
+            }
+        }
+    }
+    
+    NSString *js = nil;
+    if (paramStr.length > 0) {
+        paramStr = [[paramStr substringToIndex:paramStr.length - 1] mutableCopy]; // FIXME:
+        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\",%@);", methodName, paramStr];
+    } else {
+        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\");", methodName];
+    }
+    
+    
     return [_webView stringByEvaluatingJavaScriptFromString:js];
 }
 
