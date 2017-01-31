@@ -10,12 +10,13 @@
 
 @implementation BridgeClass
 
-+ (void)classFunction {
-    NSLog(@"call class function");
-}
-
-- (void)function {
-    NSLog(@"call function");
+- (void)showAlert {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"call from js"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"cancel"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 - (NSInteger)add:(NSInteger)a b:(NSInteger)b {

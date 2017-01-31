@@ -22,6 +22,7 @@
 		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
 		BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* SecondViewController.m */; };
 		BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* SecondViewController.xib */; };
+		BBDCD9361E409C75009C1C64 /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9351E409C74009C1C64 /* main.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		BBDCD9301E388039009C1C64 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		BBDCD9311E388039009C1C64 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		BBDCD9321E388039009C1C64 /* SecondViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecondViewController.xib; sourceTree = "<group>"; };
+		BBDCD9351E409C74009C1C64 /* main.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = main.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 		BBDCD8FD1E346C21009C1C64 /* ReflectJavascriptBridgeDemo */ = {
 			isa = PBXGroup;
 			children = (
+				BBDCD9371E409C79009C1C64 /* web */,
 				BBDCD8FE1E346C21009C1C64 /* AppDelegate.h */,
 				BBDCD8FF1E346C21009C1C64 /* AppDelegate.m */,
 				BBDCD9071E346C21009C1C64 /* ViewController.h */,
@@ -145,6 +148,14 @@
 				BBDCD9011E346C21009C1C64 /* LaunchScreen.storyboard */,
 			);
 			path = ReflectJavascriptBridgeDemo;
+			sourceTree = "<group>";
+		};
+		BBDCD9371E409C79009C1C64 /* web */ = {
+			isa = PBXGroup;
+			children = (
+				BBDCD9351E409C74009C1C64 /* main.html */,
+			);
+			name = web;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */,
+				BBDCD9361E409C75009C1C64 /* main.html in Resources */,
 				BBDCD90C1E346C21009C1C64 /* Main.storyboard in Resources */,
 				BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */,
 				BBDCD90B1E346C21009C1C64 /* LaunchScreen.storyboard in Resources */,
@@ -414,6 +426,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = WQJ84ABJFE;
 				INFOPLIST_FILE = "$(SRCROOT)/ReflectJavascriptBridgeDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LZephyr.ReflectJavascriptBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,6 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = WQJ84ABJFE;
 				INFOPLIST_FILE = "$(SRCROOT)/ReflectJavascriptBridgeDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LZephyr.ReflectJavascriptBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";

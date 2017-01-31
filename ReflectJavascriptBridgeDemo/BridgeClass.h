@@ -15,9 +15,7 @@
 @property (nonatomic) BOOL success;
 @property (nonatomic) NSInteger age;
 
-+ (void)classFunction;
-
-- (void)function;
+- (void)showAlert;
 
 - (NSInteger)add:(NSInteger)a b:(NSInteger)b;
 
@@ -29,9 +27,7 @@
 @property (nonatomic) BOOL success;
 @property (nonatomic) NSInteger age;
 
-+ (void)classFunction;
-
-- (void)function;
+- (void)showAlert;
 
 - (NSInteger)add:(NSInteger)a b:(NSInteger)b;
 

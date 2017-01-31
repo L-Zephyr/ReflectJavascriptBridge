@@ -24,21 +24,12 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </webView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oio-Wg-FOe">
-                    <rect key="frame" x="164" y="193" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="buttonPressed:" destination="-1" eventType="touchUpInside" id="MWH-nJ-wA3"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="eKb-cI-XVd" secondAttribute="trailing" id="3J4-Ci-vct"/>
                 <constraint firstItem="eKb-cI-XVd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="77i-Pj-EpO"/>
-                <constraint firstItem="Oio-Wg-FOe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="164" id="7NL-9I-cJ1"/>
                 <constraint firstAttribute="bottom" secondItem="eKb-cI-XVd" secondAttribute="bottom" id="Xf1-6Z-5rB"/>
-                <constraint firstItem="Oio-Wg-FOe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="193" id="mkg-DV-Srq"/>
                 <constraint firstItem="eKb-cI-XVd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vTJ-kZ-KZq"/>
             </constraints>
         </view>

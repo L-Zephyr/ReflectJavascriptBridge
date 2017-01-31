@@ -41,35 +41,11 @@
         
         // 获取方法名
         NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
-        // 获取属性名
-//        NSArray<NSString *> *properties = [self fetchPropertiesFromProtocols:exportProtocols];
         
         NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // js方法名到native方法名的映射
         NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
         [_js appendFormat:@"className:\"%@\",", clsName];
         [_js appendFormat:@"identifier:\"%@\",", identifier];
-        
-        // 添加js属性
-//        for (NSString *propertyName in properties) {
-//            id value = [(NSObject *)object valueForKey:propertyName];
-//            if (!value) {
-//                continue;
-//            }
-//            
-//            [_js appendFormat:@"%@:", propertyName];
-//            if ([value isKindOfClass:[NSString class]]) {
-//                [_js appendFormat:@"\"%@\",", (NSString *)value];
-//            } else if ([value isKindOfClass:[NSNumber class]]) {
-//                NSNumber *number = (NSNumber *)value;
-//                if (strcmp([number objCType], @encode(double)) == 0 || strcmp([number objCType], @encode(float)) == 0) {
-//                    [_js appendFormat:@"%g", [number doubleValue]];
-//                } else {
-//                    [_js appendFormat:@"%ld,", [number integerValue]];
-//                }
-//            } else {
-//                NSLog(@"property bridge not support class %s", class_getName([value class]));
-//            }
-//        }
         
         // 添加js方法
         for (NSDictionary *nativeMethodInfo in methodInfos) {
@@ -125,26 +101,6 @@
         }
     }
     return [methods copy];
-}
-
-/**
- 获取协议中的所有属性名
-
- @param protoList 包含Protocol的数组
- @return          属性名数组
- */
-- (NSArray<NSString *> *)fetchPropertiesFromProtocols:(NSArray<Protocol *> *)protoList {
-    NSMutableArray<NSString *> *properties = [NSMutableArray array];
-    for (Protocol *proto in protoList) {
-        unsigned int count = 0;
-        objc_property_t *propertyList = protocol_copyPropertyList(proto, &count);
-        for (int index = 0; index < count; ++index) {
-            objc_property_t property = propertyList[index];
-            [properties addObject:[NSString stringWithUTF8String:property_getName(property)]];
-        }
-        free(propertyList);
-    }
-    return [properties copy];
 }
 
 - (NSString *)jsMethodBodyWithName:(NSString *)methodName returnType:(NSString *)returnType {

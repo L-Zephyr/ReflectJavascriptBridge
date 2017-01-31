@@ -1,0 +1,75 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="./global.css">
+<!--   <script type="text/javascript" src="./common/global.js"></script>
+  <script type="text/javascript" src="./common/fastclick.js"></script> -->
+  <style>
+  	body {
+  		display: flex;
+  		flex-direction: column;
+  	}
+  </style>
+  <script type="text/javascript">
+;(function() {
+    if (window.ReflectJavascriptBridge) {
+        return;
+    }
+    console.log(document);
+    var iFrame = document.createElement("iframe");
+    iFrame.style.display = 'none';
+    iFrame.src = "ReflectJavascriptBridge://_InjectJs_";
+    document.documentElement.appendChild(iFrame);
+    setTimeout(function() {
+        document.documentElement.removeChild(iFrame);
+    }, 0);
+})();
+
+function reflectJavascriptBridgeRegisterFunction(name, func) {
+    if (window.ReflectJavascriptBridge) {
+        window.ReflectJavascriptBridge[name] = func;
+    } else if (window.RJBRegisteredFunctions) {
+        window.RJBRegisteredFunctions.push({name: name, func: func});
+        console.log("push to functions");
+    } else {
+        window.RJBRegisteredFunctions = [{name: name, func: func}];
+        console.log("create functions");
+    }
+}
+
+reflectJavascriptBridgeRegisterFunction("jsFunc", function(data1, data2) {
+	console.log("native call js function, arg" + data1 + " " + data2);
+})
+
+
+var app = {
+	showAlert: function() {
+		ReflectJavascriptBridge.nativeObject.showAlert();
+	},
+	add: function() {
+		var num1 = document.getElementById("left").value;
+		var num2 = document.getElementById("right").value;
+		ReflectJavascriptBridge.nativeObject.addB(num1, num2, function(retValue) {
+			var p = document.createElement("p")
+			p.value = "result is " + retValue;
+			document.getElementById("addButton").insertBefore(p);
+		})
+	}
+}
+  </script>
+</head>
+<body>
+  <div>
+  	<p>Call native method without argument and returned value</p>
+  	<button onclick="app.showAlert()">call</button>
+  </div>
+  <div>
+  	<p>Call native method with arguments and returned value</p>
+  	<input type="text" id="left" />
+  	<span> + </span>
+  	<input type="text" id="right" />
+  	<button onclick="app.add()" class="addButton">add</button>
+  </div>
+</body>
+</html>
