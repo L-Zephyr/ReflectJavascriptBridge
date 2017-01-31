@@ -44,7 +44,7 @@
  @param args       任意数量的参数
  @return           执行结果，如果尚未完成初始化则返回nil
  */
-- (NSString *)callMethod:(NSString *)methodName withArgs:(NSArray *)args;
+- (NSString *)callJsMethod:(NSString *)methodName withArgs:(NSArray *)args;
 
 // Subscript
 - (id)objectForKeyedSubscript:(id)key;

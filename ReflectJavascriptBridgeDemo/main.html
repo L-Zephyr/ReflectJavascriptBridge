@@ -51,9 +51,10 @@ var app = {
 		var num1 = document.getElementById("left").value;
 		var num2 = document.getElementById("right").value;
 		ReflectJavascriptBridge.nativeObject.addB(num1, num2, function(retValue) {
-			var p = document.createElement("p")
+			var p = document.createElement("p");
 			p.value = "result is " + retValue;
-			document.getElementById("addButton").insertBefore(p);
+			var button = document.getElementById("addButton");
+      document.getElementById("addButton").parentNode.insertBefore(p, button);
 		})
 	}
 }

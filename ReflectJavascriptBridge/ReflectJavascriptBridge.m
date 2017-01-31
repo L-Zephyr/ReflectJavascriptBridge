@@ -42,7 +42,7 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
     return [_webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (NSString *)callMethod:(NSString *)methodName withArgs:(NSArray *)args {
+- (NSString *)callJsMethod:(NSString *)methodName withArgs:(NSArray *)args {
     if (!_injectJsFinished) {
         NSLog(@"javascript initialize not complete!");
         return nil;
@@ -54,20 +54,13 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
             [paramStr appendFormat:@"\"%@\",", (NSString *)param];
         } else if ([param isKindOfClass:[NSNumber class]]) {
             NSNumber *number = (NSNumber *)param;
-            const char *type = [number objCType];
-            if (strcmp(type, @encode(double)) == 0) {
-                [paramStr appendFormat:@"%g,", [number doubleValue]];
-            } else if (strcmp(type, @encode(BOOL)) == 0) {
-                [paramStr appendFormat:@"%@,", [number boolValue] ? @"true" : @"false"];
-            } else {
-                [paramStr appendFormat:@"%ld,", [number integerValue]];
-            }
+            [paramStr appendFormat:@"%@,", number];
         }
     }
     
     NSString *js = nil;
     if (paramStr.length > 0) {
-        NSString *param = [paramStr substringToIndex:paramStr.length - 1]; // TODO: 去掉最后一个逗号
+        NSString *param = [paramStr substringToIndex:paramStr.length - 1]; // delete the last comma
         js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\",[%@]);", methodName, param];
     } else {
         js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\");", methodName];
@@ -138,7 +131,7 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
  向webView中注入JS代码
  */
 - (void)injectJs {
-    NSString *result = [_webView stringByEvaluatingJavaScriptFromString:ReflectJavascriptBridgeInjectedJS()];
+    [_webView stringByEvaluatingJavaScriptFromString:ReflectJavascriptBridgeInjectedJS()];
     _injectJsFinished = YES;
     [_waitingObjects enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id<ReflectBridgeExport>  _Nonnull obj, BOOL * _Nonnull stop) {
         [self setObject:obj forKeyedSubscript:key];

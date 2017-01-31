@@ -103,3 +103,21 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
     );
 }
 
+BOOL RJB_isInteger(NSString *type) {
+    NSString *intEncoding = @"cislq";
+    return type.length == 1 && [intEncoding containsString:type];
+}
+
+BOOL RJB_isUnsignedInteger(NSString *type) {
+    NSString *unsignedIntEncoding = @"CISLQ";
+    return type.length == 1 && [unsignedIntEncoding containsString:type];
+}
+
+BOOL RJB_isFloat(NSString *type) {
+    NSString *floatEncoding = @"fd";
+    return type.length == 1 && [floatEncoding containsString:type];
+}
+
+BOOL RJB_isClass(NSString *type) {
+    return [type isEqualToString:@"@"];
+}

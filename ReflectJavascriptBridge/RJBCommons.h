@@ -10,7 +10,21 @@
 
 @protocol ReflectBridgeExport <NSObject>
 
+// empty protocol
+
 @end
 
-// 注入的JS代码
+// js code to inject
 NSString *ReflectJavascriptBridgeInjectedJS();
+
+// 检测类型编码type是否为整型类型
+BOOL RJB_isInteger(NSString *type);
+
+// 检测类型编码type是否为无符号整型
+BOOL RJB_isUnsignedInteger(NSString *type);
+
+// 检测类型编码type是否为浮点类型
+BOOL RJB_isFloat(NSString *type);
+
+// 类型编码type是否为类
+BOOL RJB_isClass(NSString *type);

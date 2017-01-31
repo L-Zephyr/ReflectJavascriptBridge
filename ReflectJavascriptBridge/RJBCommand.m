@@ -72,25 +72,43 @@
     }
     invocation.selector = selector;
     
-    // 设置参数
-    if (_args.count != 0) {
-        NSInteger index = 2;
-        for (id arg in _args) {
-            if ([arg isKindOfClass:[NSString class]]) {
-                NSString *param = (NSString *)arg;
-                [invocation setArgument:&param atIndex:index];
-            } else if ([arg isKindOfClass:[NSNumber class]]) {
-                NSNumber *number = (NSNumber *)arg;
-                const char *type = [number objCType];
-                if (strcmp(type, @encode(double)) == 0 || strcmp(type, @encode(float)) == 0) {
-                    double param = [number doubleValue];
-                    [invocation setArgument:&param atIndex:index];
-                } else {
-                    NSInteger param = [number integerValue];
-                    [invocation setArgument:&param atIndex:index];
-                }
+    for (NSInteger paramIndex = 2; paramIndex < [sign numberOfArguments]; ++paramIndex) {
+        if (_args.count <= paramIndex - 2) {
+            break;
+        }
+        id arg = _args[paramIndex - 2];
+        NSString *type = [NSString stringWithUTF8String:[sign getArgumentTypeAtIndex:paramIndex]]; // expected type
+        
+        if ([arg isKindOfClass:[NSString class]]) {
+            if (RJB_isClass(type)) {
+                [invocation setArgument:&arg atIndex:paramIndex];
+            } else if (RJB_isInteger(type) || RJB_isUnsignedInteger(type)) {
+                long long param = [(NSString *)arg longLongValue];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else if (RJB_isFloat(type)) {
+                double param = [(NSString *)arg doubleValue];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else {
+                NSLog(@"argument not support type");
+                return;
             }
-            ++index;
+        } else if ([arg isKindOfClass:[NSNumber class]]) {
+            if (RJB_isClass(type)) {
+                NSString *param = [NSString stringWithFormat:@"%@", (NSString *)arg];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else if (RJB_isInteger(type)) {
+                long long param = [(NSNumber *)arg longLongValue];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else if (RJB_isUnsignedInteger(type)) {
+                unsigned long long param = [(NSNumber *)arg unsignedLongLongValue];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else if (RJB_isFloat(type)) {
+                double param = [(NSNumber *)arg doubleValue];
+                [invocation setArgument:&param atIndex:paramIndex];
+            } else {
+                NSLog(@"argument not support type");
+                return;
+            }
         }
     }
     
