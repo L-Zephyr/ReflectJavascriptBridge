@@ -1,1 +1,11 @@
 # ReflectJavascriptBridge
+ReflectJavascriptBridge是一个用于Native与JavaScript通信的iOS库，支持UIWebView和WKWebView。  
+
+## 为什么会有ReflectJavascriptBridge
+自从iOS7以来我们可以通过JavaScriptCore框架直接将Native的对象传递给JavaScript使用，这是一个非常方便的功能，但是在UIWebView和WKWebView中并没有提供公开的API来获取JSContext对象(UIWebView可以通过一些trick的方法来获取，但有被拒风险)。  
+
+为了解决这个问题，ReflectJavascriptBridge使用合法的方式实现了类似JavaScriptCore的通讯方式，将Native代码中创建的对象桥接到JS环境中。
+
+## 使用
+1. 导入头文件`ReflectJavascriptBridge.h`
+2. 
