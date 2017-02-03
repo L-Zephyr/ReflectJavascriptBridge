@@ -1,45 +1,41 @@
 //
-//  SecondViewController.m
+//  ThirdViewController.m
 //  ReflectJavascriptBridge
 //
-//  Created by LZephyr on 2017/1/25.
+//  Created by LZephyr on 2017/1/31.
 //  Copyright © 2017年 LZephyr. All rights reserved.
 //
 
-#import "SecondViewController.h"
+#import "ThirdViewController.h"
 #import "ReflectJavascriptBridge.h"
-#import "BridgeClass.h"
 
-@protocol NavigationBarBridgeDelegate <ReflectBridgeExport>
+@protocol NavigatorProtocol <ReflectBridgeExport>
 
-- (void)setNavBarOffset:(CGFloat)offset;
+- (void)setOffset:(NSInteger)offset;
 
 @end
 
-@interface SecondViewController () <UIWebViewDelegate>
+@interface ThirdViewController () <UIWebViewDelegate, NavigatorProtocol>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (nonnull) ReflectJavascriptBridge *bridge;
 
 @end
 
-@implementation SecondViewController
+@implementation ThirdViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.navigationController.navigationBar.backgroundColor = [UIColor blueColor];
+    
     _webView.delegate = self;
     _webView.backgroundColor = [UIColor clearColor];
     
     _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
+    _bridge[@"navigator"] = self;
     
-    BridgeClass *obj = [[BridgeClass alloc] init];
-    _bridge[@"nativeObject"] = obj;
-    
-//    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
-    
-    NSData *htmlData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"demo1" ofType:@"html"]];
+    NSData *htmlData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"demo2" ofType:@"html"]];
     NSString *html = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
     [_webView loadHTMLString:html baseURL:nil];
 }
@@ -47,6 +43,17 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Export method
+
+- (void)setOffset:(NSInteger)offset {
+    if (offset > 128) {
+        offset = 128;
+    }
+    NSLog(@"change alpha %ld", offset);
+    CGFloat alpha = 1 - ((CGFloat)offset / 128.0f);
+    self.navigationController.navigationBar.alpha = alpha;
 }
 
 @end

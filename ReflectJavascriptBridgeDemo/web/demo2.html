@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="./global.css">
+<!--   <script type="text/javascript" src="./common/global.js"></script>
+  <script type="text/javascript" src="./common/fastclick.js"></script> -->
+  <style>
+  	body {
+  		height: 2000px;
+  	}
+  </style>
+  <script type="text/javascript">
+;(function() {
+  if (window.ReflectJavascriptBridge) {
+    return;
+  }
+  console.log(document);
+  var iFrame = document.createElement("iframe");
+  iFrame.style.display = 'none';
+  iFrame.src = "ReflectJavascriptBridge://_InjectJs_";
+  document.documentElement.appendChild(iFrame);
+  setTimeout(function() {
+    document.documentElement.removeChild(iFrame);
+  }, 0);
+})();
+
+function reflectJavascriptBridgeRegisterFunction(name, func) {
+  if (window.ReflectJavascriptBridge) {
+    window.ReflectJavascriptBridge[name] = func;
+  } else if (window.RJBRegisteredFunctions) {
+    window.RJBRegisteredFunctions.push({name: name, func: func});
+    console.log("push to functions");
+  } else {
+    window.RJBRegisteredFunctions = [{name: name, func: func}];
+    console.log("create functions");
+  }
+}
+
+document.addEventListener("touchmove", touchMove, false);
+function touchMove() {
+  console.log(window.scrollY);
+  ReflectJavascriptBridge.navigator.setOffset(window.scrollY);
+}
+
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

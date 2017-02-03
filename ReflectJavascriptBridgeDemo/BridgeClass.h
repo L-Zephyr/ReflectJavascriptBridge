@@ -17,7 +17,7 @@
 
 - (void)showAlert;
 
-- (NSInteger)add:(NSInteger)a b:(NSInteger)b;
+JSExportAs(add, - (NSInteger)add:(NSInteger)a b:(NSInteger)b);
 
 @end
 

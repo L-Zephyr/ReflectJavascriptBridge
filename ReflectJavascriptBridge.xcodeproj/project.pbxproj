@@ -22,7 +22,10 @@
 		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
 		BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* SecondViewController.m */; };
 		BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* SecondViewController.xib */; };
-		BBDCD9361E409C75009C1C64 /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9351E409C74009C1C64 /* main.html */; };
+		BBDCD93B1E40DFD6009C1C64 /* demo1.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9391E40DFD6009C1C64 /* demo1.html */; };
+		BBDCD93C1E40DFD6009C1C64 /* demo2.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD93A1E40DFD6009C1C64 /* demo2.html */; };
+		BBDCD9401E40DFFB009C1C64 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */; };
+		BBDCD9411E40DFFB009C1C64 /* ThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +66,11 @@
 		BBDCD9301E388039009C1C64 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		BBDCD9311E388039009C1C64 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		BBDCD9321E388039009C1C64 /* SecondViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecondViewController.xib; sourceTree = "<group>"; };
-		BBDCD9351E409C74009C1C64 /* main.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = main.html; sourceTree = "<group>"; };
+		BBDCD9391E40DFD6009C1C64 /* demo1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo1.html; sourceTree = "<group>"; };
+		BBDCD93A1E40DFD6009C1C64 /* demo2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo2.html; sourceTree = "<group>"; };
+		BBDCD93D1E40DFFB009C1C64 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
+		BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +138,6 @@
 		BBDCD8FD1E346C21009C1C64 /* ReflectJavascriptBridgeDemo */ = {
 			isa = PBXGroup;
 			children = (
-				BBDCD9371E409C79009C1C64 /* web */,
 				BBDCD8FE1E346C21009C1C64 /* AppDelegate.h */,
 				BBDCD8FF1E346C21009C1C64 /* AppDelegate.m */,
 				BBDCD9071E346C21009C1C64 /* ViewController.h */,
@@ -140,8 +146,12 @@
 				BBDCD9301E388039009C1C64 /* SecondViewController.h */,
 				BBDCD9311E388039009C1C64 /* SecondViewController.m */,
 				BBDCD9321E388039009C1C64 /* SecondViewController.xib */,
+				BBDCD93D1E40DFFB009C1C64 /* ThirdViewController.h */,
+				BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */,
+				BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */,
 				BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */,
 				BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */,
+				BBDCD9381E40DFD6009C1C64 /* web */,
 				BBDCD9051E346C21009C1C64 /* Info.plist */,
 				BBDCD9061E346C21009C1C64 /* main.m */,
 				BBDCD9001E346C21009C1C64 /* Assets.xcassets */,
@@ -150,12 +160,13 @@
 			path = ReflectJavascriptBridgeDemo;
 			sourceTree = "<group>";
 		};
-		BBDCD9371E409C79009C1C64 /* web */ = {
+		BBDCD9381E40DFD6009C1C64 /* web */ = {
 			isa = PBXGroup;
 			children = (
-				BBDCD9351E409C74009C1C64 /* main.html */,
+				BBDCD9391E40DFD6009C1C64 /* demo1.html */,
+				BBDCD93A1E40DFD6009C1C64 /* demo2.html */,
 			);
-			name = web;
+			path = web;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,10 +254,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBDCD9411E40DFFB009C1C64 /* ThirdViewController.xib in Resources */,
 				BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */,
-				BBDCD9361E409C75009C1C64 /* main.html in Resources */,
 				BBDCD90C1E346C21009C1C64 /* Main.storyboard in Resources */,
 				BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */,
+				BBDCD93B1E40DFD6009C1C64 /* demo1.html in Resources */,
+				BBDCD93C1E40DFD6009C1C64 /* demo2.html in Resources */,
 				BBDCD90B1E346C21009C1C64 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +300,7 @@
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
 				BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */,
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,
+				BBDCD9401E40DFFB009C1C64 /* ThirdViewController.m in Sources */,
 				BBDCD90E1E346C21009C1C64 /* main.m in Sources */,
 				BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */,
 				BBDCD9091E346C21009C1C64 /* AppDelegate.m in Sources */,

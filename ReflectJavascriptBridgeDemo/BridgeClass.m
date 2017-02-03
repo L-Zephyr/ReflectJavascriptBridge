@@ -24,4 +24,9 @@
     return a+b;
 }
 
+- (void)setName:(NSString *)name {
+    _name = name;
+    NSLog(@"js change property value to %@", name);
+}
+
 @end
