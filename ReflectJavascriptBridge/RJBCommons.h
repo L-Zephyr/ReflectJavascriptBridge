@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef JSExoprtAs
+#define JSExportAs(PropertyName, Selector) \
+@optional Selector __JS_EXPORT_AS__##PropertyName:(id)argument; @required Selector
+#endif
+
 @protocol ReflectBridgeExport <NSObject>
 
 // empty protocol

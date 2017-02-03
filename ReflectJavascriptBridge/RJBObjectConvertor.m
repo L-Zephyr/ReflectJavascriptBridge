@@ -12,6 +12,7 @@
 @interface RJBObjectConvertor()
 
 @property (nonatomic) NSMutableString *js;
+@property (nonatomic) NSMutableDictionary<NSString*, NSString*> *exportMethodMaps; // localName -> jsName
 
 @end
 
@@ -25,6 +26,7 @@
 - (instancetype)initWithObject:(id<ReflectBridgeExport>)object idenetifier:(NSString *)identifier {
     self = [super init];
     if (self) {
+        _exportMethodMaps = [[NSMutableDictionary alloc] init];
         _js = [[NSMutableString alloc] init];
         [_js appendString:@"{"];
         
@@ -49,14 +51,21 @@
         
         // 添加js方法
         for (NSDictionary *nativeMethodInfo in methodInfos) {
-            NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodInfo[@"name"]];
+            NSString *nativeMethodName = nativeMethodInfo[@"name"];
+            NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodName];
             NSString *returnType = nativeMethodInfo[@"returnType"];
-            NSString *methodName = jsMethodInfo[@"name"];
-            NSString *methodParam = jsMethodInfo[@"paramStr"];
-            NSString *methodBody = [self jsMethodBodyWithName:methodName returnType:returnType];
+            NSString *jsMethodName = jsMethodInfo[@"name"];
+            NSString *jsMethodParam = jsMethodInfo[@"paramStr"];
             
-            [_js appendFormat:@"%@:function(%@){%@},", methodName, methodParam, methodBody];
-            [methodMaps setObject:nativeMethodInfo[@"name"] forKey:methodName];
+            // Export as
+            if ([_exportMethodMaps.allKeys containsObject:nativeMethodName]) {
+                jsMethodName = _exportMethodMaps[nativeMethodName];
+            }
+            
+            NSString *jsMethodBody = [self jsMethodBodyWithName:jsMethodName returnType:returnType];
+            
+            [_js appendFormat:@"%@:function(%@){%@},", jsMethodName, jsMethodParam, jsMethodBody];
+            [methodMaps setObject:nativeMethodName forKey:jsMethodName];
         }
         
         NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
@@ -95,6 +104,13 @@
                 struct objc_method_description des = desList[desIndex];
                 NSString *methodName = [NSString stringWithUTF8String:sel_getName(des.name)];
                 NSString *returnType = [[NSString stringWithUTF8String:des.types] substringWithRange:NSMakeRange(0, 1)];
+                if ([methodName containsString:@"__JS_EXPORT_AS__"]) {
+                    NSArray *arr = [methodName componentsSeparatedByString:@"__JS_EXPORT_AS__"];
+                    if (arr.count == 2) { // first: original name, last: exported name
+                        _exportMethodMaps[arr.firstObject] = [self convertNativeMethodToJs:arr.lastObject][@"name"];
+                        continue;
+                    }
+                }
                 [methods addObject:@{@"name": methodName, @"returnType": returnType}];
             }
             free(desList);
@@ -111,7 +127,7 @@
  返回转换后的JS方法名和参数
 
  @param nativeMethod native方法名
- @return 返回一个字典，包括两个key: `name`和`paramStr`
+ @return 返回一个字典，包括两个key: `name`和`paramStr`(如果有参数)
  */
 - (NSDictionary *)convertNativeMethodToJs:(NSString *)nativeMethod {
     NSArray<NSString *> *componenet = [nativeMethod componentsSeparatedByString:@":"];
