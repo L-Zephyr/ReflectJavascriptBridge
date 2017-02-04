@@ -13,6 +13,10 @@
 @optional Selector __JS_EXPORT_AS__##PropertyName:(id)argument; @required Selector
 #endif
 
+static NSString *const RJBScheme = @"reflectjavascriptbridge";
+static NSString *const RJBReadyForMessage = @"_ReadyForCommands_";
+static NSString *const RJBInjectJs = @"_InjectJs_";
+
 @protocol ReflectBridgeExport <NSObject>
 // empty protocol
 @end

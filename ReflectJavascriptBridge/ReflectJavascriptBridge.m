@@ -14,10 +14,6 @@
 #import "RJBUIWebViewBridge.h"
 #import "RJBWKWebViewBridge.h"
 
-static NSString *const ReflectScheme = @"reflectjavascriptbridge";
-static NSString *const ReflectReadyForMessage = @"_ReadyForCommands_";
-static NSString *const ReflectInjectJs = @"_InjectJs_";
-
 @interface ReflectJavascriptBridge() <UIWebViewDelegate>
 
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
@@ -29,13 +25,11 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 
 @implementation ReflectJavascriptBridge
 
-+ (ReflectJavascriptBridge *)bridge:(id)webView delegate:(id<UIWebViewDelegate>)delegate {
-//    ReflectJavascriptBridge *bridge = [[ReflectJavascriptBridge alloc] initWithWebView:webView delegate:delegate];
-    
++ (ReflectJavascriptBridge *)bridge:(id)webView delegate:(id)delegate {
     if ([webView isKindOfClass:[UIWebView class]]) {
         return [[RJBUIWebViewBridge alloc] initWithWebView:webView delegate:delegate];
     } else if ([webView isKindOfClass:[WKWebView class]]) {
-        return nil;
+        return [[RJBWKWebViewBridge alloc] initWithWebView:webView delegate:delegate];
     } else {
         NSLog(@"[RJB]webView should be `UIWebView` or `WKWebView`");
         return nil;

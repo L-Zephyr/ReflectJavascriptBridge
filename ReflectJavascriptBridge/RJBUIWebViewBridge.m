@@ -10,10 +10,6 @@
 #import "RJBCommand.h"
 #import <objc/runtime.h>
 
-static NSString *const ReflectScheme = @"reflectjavascriptbridge";
-static NSString *const ReflectReadyForMessage = @"_ReadyForCommands_";
-static NSString *const ReflectInjectJs = @"_InjectJs_";
-
 // inherit from super class
 @interface RJBUIWebViewBridge(protected)
 
@@ -111,10 +107,10 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([request.URL.scheme isEqualToString:ReflectScheme]) {
-        if ([request.URL.host isEqualToString:ReflectInjectJs]) {
+    if ([request.URL.scheme isEqualToString:RJBScheme]) {
+        if ([request.URL.host isEqualToString:RJBInjectJs]) {
             [self injectJs];
-        } else if ([request.URL.host isEqualToString:ReflectReadyForMessage]) {
+        } else if ([request.URL.host isEqualToString:RJBReadyForMessage]) {
             [self fetchQueueingCommands];
         }
         return NO;

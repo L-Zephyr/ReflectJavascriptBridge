@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
+#import "ReflectJavascriptBridge.h"
 
-@interface RJBWKWebViewBridge : NSObject
+@interface RJBWKWebViewBridge : ReflectJavascriptBridge
+
+- (instancetype)initWithWebView:(WKWebView *)webView delegate:(id<WKNavigationDelegate>)delegate;
 
 @end

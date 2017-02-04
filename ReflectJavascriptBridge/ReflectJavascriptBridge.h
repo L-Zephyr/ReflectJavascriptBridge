@@ -20,7 +20,7 @@
  @param delegate webView的delegate对象
  @return         返回创建的的ReflectJavascriptBridge实例
  */
-+ (ReflectJavascriptBridge *)bridge:(id)webView delegate:(id<UIWebViewDelegate>)delegate;
++ (ReflectJavascriptBridge *)bridge:(id)webView delegate:(id)delegate;
 
 /**
  初始化ReflectJavascriptBridge对象
