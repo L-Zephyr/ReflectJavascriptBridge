@@ -141,7 +141,7 @@
         }
         
         NSString *callbackJs = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.callback(\"%@\",%@);", _callbackId, value];
-        [bridge callJs:callbackJs];
+        [bridge callJs:callbackJs completionHandler:nil];
     }
 }
 

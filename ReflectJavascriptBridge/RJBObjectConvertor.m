@@ -30,7 +30,7 @@
         _js = [[NSMutableString alloc] init];
         [_js appendString:@"{"];
         
-        // 找到所有实现了ReflectBridgeExport的协议
+        // find out all protocol that inherited from `ReflectBridgeExport`
         NSMutableArray<Protocol *> *exportProtocols = [NSMutableArray array];
         unsigned int outCount = 0;
         Protocol * __unsafe_unretained *protos = class_copyProtocolList(object_getClass(object), &outCount);
@@ -41,10 +41,9 @@
             }
         }
         
-        // 获取方法名
         NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
         
-        NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // js方法名到native方法名的映射
+        NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // jsName -> nativeName
         NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
         [_js appendFormat:@"className:\"%@\",", clsName];
         [_js appendFormat:@"identifier:\"%@\",", identifier];

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */; };
+		BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */; };
 		BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */; };
 		BBDCD9091E346C21009C1C64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD8FF1E346C21009C1C64 /* AppDelegate.m */; };
 		BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9001E346C21009C1C64 /* Assets.xcassets */; };
@@ -39,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BBDB2EFE1E44BB17000515BD /* RJBWKWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBWKWebViewBridge.h; sourceTree = "<group>"; };
+		BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBWKWebViewBridge.m; sourceTree = "<group>"; };
+		BBDB2F011E44BB2E000515BD /* RJBUIWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBUIWebViewBridge.h; sourceTree = "<group>"; };
+		BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBUIWebViewBridge.m; sourceTree = "<group>"; };
 		BBDCD8D41E346BFA009C1C64 /* ReflectJavascriptBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReflectJavascriptBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBDCD8ED1E346BFA009C1C64 /* ReflectJavascriptBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReflectJavascriptBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReflectJavascriptBridgeTests.m; sourceTree = "<group>"; };
@@ -91,6 +97,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BBDB2F041E44BD2C000515BD /* WebViewBridge */ = {
+			isa = PBXGroup;
+			children = (
+				BBDB2F011E44BB2E000515BD /* RJBUIWebViewBridge.h */,
+				BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */,
+				BBDB2EFE1E44BB17000515BD /* RJBWKWebViewBridge.h */,
+				BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */,
+			);
+			name = WebViewBridge;
+			sourceTree = "<group>";
+		};
 		BBDCD8CB1E346BFA009C1C64 = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +148,7 @@
 				BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */,
 				BBDCD9251E35F15C009C1C64 /* RJBCommons.h */,
 				BBDCD9261E35F15C009C1C64 /* RJBCommons.m */,
+				BBDB2F041E44BD2C000515BD /* WebViewBridge */,
 			);
 			path = ReflectJavascriptBridge;
 			sourceTree = "<group>";
@@ -302,6 +320,8 @@
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,
 				BBDCD9401E40DFFB009C1C64 /* ThirdViewController.m in Sources */,
 				BBDCD90E1E346C21009C1C64 /* main.m in Sources */,
+				BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */,
+				BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */,
 				BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */,
 				BBDCD9091E346C21009C1C64 /* AppDelegate.m in Sources */,
 			);

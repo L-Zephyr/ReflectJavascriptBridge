@@ -14,12 +14,10 @@
 #endif
 
 @protocol ReflectBridgeExport <NSObject>
-
 // empty protocol
-
 @end
 
-// js code to inject
+// the js code to inject
 NSString *ReflectJavascriptBridgeInjectedJS();
 
 // 检测类型编码type是否为整型类型

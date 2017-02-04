@@ -11,6 +11,8 @@
 #import "RJBObjectConvertor.h"
 #import "RJBCommand.h"
 #import <objc/runtime.h>
+#import "RJBUIWebViewBridge.h"
+#import "RJBWKWebViewBridge.h"
 
 static NSString *const ReflectScheme = @"reflectjavascriptbridge";
 static NSString *const ReflectReadyForMessage = @"_ReadyForCommands_";
@@ -21,53 +23,35 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *waitingObjects; // wait for bridge
 @property (nonatomic) NSMutableArray<RJBCommand *> *commands;
-@property (nonatomic) id<UIWebViewDelegate> delegate;
-@property (nonatomic) UIWebView *webView;
 @property (nonatomic) BOOL injectJsFinished;
 
 @end
 
 @implementation ReflectJavascriptBridge
 
-+ (ReflectJavascriptBridge *)bridge:(UIWebView *)webView delegate:(id<UIWebViewDelegate>)delegate {
-    ReflectJavascriptBridge *bridge = [[ReflectJavascriptBridge alloc] initWithWebView:webView delegate:delegate];
-    return bridge;
++ (ReflectJavascriptBridge *)bridge:(id)webView delegate:(id<UIWebViewDelegate>)delegate {
+//    ReflectJavascriptBridge *bridge = [[ReflectJavascriptBridge alloc] initWithWebView:webView delegate:delegate];
+    
+    if ([webView isKindOfClass:[UIWebView class]]) {
+        return [[RJBUIWebViewBridge alloc] initWithWebView:webView delegate:delegate];
+    } else if ([webView isKindOfClass:[WKWebView class]]) {
+        return nil;
+    } else {
+        NSLog(@"[RJB]webView should be `UIWebView` or `WKWebView`");
+        return nil;
+    }
 }
 
-+ (ReflectJavascriptBridge *)bridge:(UIWebView *)webView {
++ (ReflectJavascriptBridge *)bridge:(id)webView {
     return [ReflectJavascriptBridge bridge:webView delegate:nil];
 }
 
-- (NSString *)callJs:(NSString *)js {
-    return [_webView stringByEvaluatingJavaScriptFromString:js];
+- (void)callJs:(NSString *)js completionHandler:(void (^)(id, NSError *))handler {
+    NSLog(@"[RJB]: implement `callJs:completionHandler:` in subclass");
 }
 
-- (NSString *)callJsMethod:(NSString *)methodName withArgs:(NSArray *)args {
-    if (!_injectJsFinished) {
-        NSLog(@"javascript initialize not complete!");
-        return nil;
-    }
-    
-    NSMutableString *paramStr = [NSMutableString string];
-    for (id param in args) {
-        if ([param isKindOfClass:[NSString class]]) {
-            [paramStr appendFormat:@"\"%@\",", (NSString *)param];
-        } else if ([param isKindOfClass:[NSNumber class]]) {
-            NSNumber *number = (NSNumber *)param;
-            [paramStr appendFormat:@"%@,", number];
-        }
-    }
-    
-    NSString *js = nil;
-    if (paramStr.length > 0) {
-        NSString *param = [paramStr substringToIndex:paramStr.length - 1]; // delete the last comma
-        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\",[%@]);", methodName, param];
-    } else {
-        js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.checkAndCall(\"%@\");", methodName];
-    }
-    
-    
-    return [_webView stringByEvaluatingJavaScriptFromString:js];
+- (void)callJsMethod:(NSString *)methodName withArgs:(NSArray *)args completionHandler:(void (^)(id, NSError *))handler {
+    NSLog(@"[RJB]: implement `callJsMethod:withArgs:completionHandler:` in subclass");
 }
 
 /**
@@ -79,7 +63,7 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
 - (void)bridgeObjectToJs:(id<ReflectBridgeExport>)obj name:(NSString *)name {
     NSString *jsObj = [self convertNativeObjectToJs:obj identifier:name];
     NSString *js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.addObject(%@,\"%@\");", jsObj, name];
-    [self callJs:js];
+    [self callJs:js completionHandler:nil];
 }
 
 /**
@@ -97,19 +81,21 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
  从JS中获取待执行的command对象
  */
 - (void)fetchQueueingCommands {
-    NSString *json = [_webView stringByEvaluatingJavaScriptFromString:@"window.ReflectJavascriptBridge.dequeueCommandQueue();"];
-    NSData *jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSArray *commandArray = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-    if (commandArray != nil) {
-        for (NSDictionary *commandInfo in commandArray) {
-            RJBCommand *command = [RJBCommand commandWithDic:commandInfo];
-            if (command != nil) {
-                [_commands addObject:command];
+    [self callJs:@"window.ReflectJavascriptBridge.dequeueCommandQueue();" completionHandler:^(id result, NSError *error) {
+        NSString *json = (NSString *)result;
+        NSData *jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
+        NSArray *commandArray = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+        if (commandArray != nil) {
+            for (NSDictionary *commandInfo in commandArray) {
+                RJBCommand *command = [RJBCommand commandWithDic:commandInfo];
+                if (command != nil) {
+                    [_commands addObject:command];
+                }
             }
         }
-    }
-    
-    [self execCommands];
+        
+        [self execCommands];
+    }];
 }
 
 /**
@@ -131,22 +117,22 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
  向webView中注入JS代码
  */
 - (void)injectJs {
-    [_webView stringByEvaluatingJavaScriptFromString:ReflectJavascriptBridgeInjectedJS()];
-    _injectJsFinished = YES;
-    [_waitingObjects enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id<ReflectBridgeExport>  _Nonnull obj, BOOL * _Nonnull stop) {
-        [self setObject:obj forKeyedSubscript:key];
+    [self callJs:ReflectJavascriptBridgeInjectedJS() completionHandler:^(id result, NSError *error) {
+        if (!error) { // TODO: handle error
+            _injectJsFinished = YES;
+            [_waitingObjects enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id<ReflectBridgeExport>  _Nonnull obj, BOOL * _Nonnull stop) {
+                [self setObject:obj forKeyedSubscript:key];
+            }];
+            [_waitingObjects removeAllObjects];
+        }
     }];
-    [_waitingObjects removeAllObjects];
 }
 
 #pragma mark - Initialize
 
-- (instancetype)initWithWebView:(UIWebView *)webView delegate:(id<UIWebViewDelegate>)delegate {
+- (instancetype)init {
     self = [super init];
     if (self) {
-        _webView = webView;
-        _delegate = delegate;
-        _webView.delegate = self;
         _reflectObjects = [NSMutableDictionary dictionary];
         _waitingObjects = [NSMutableDictionary dictionary];
         _commands = [NSMutableArray array];
@@ -175,43 +161,6 @@ static NSString *const ReflectInjectJs = @"_InjectJs_";
     } else {
         _waitingObjects[aKey] = object;
     }
-}
-
-#pragma mark - UIWebViewDelegate
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    if ([_delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [_delegate webViewDidStartLoad:webView];
-    }
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    if ([_delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [_delegate webViewDidFinishLoad:webView];
-    }
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    if ([_delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
-        [_delegate webView:webView didFailLoadWithError:error];
-    }
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([request.URL.scheme isEqualToString:ReflectScheme]) {
-        if ([request.URL.host isEqualToString:ReflectInjectJs]) {
-            [self injectJs];
-        } else if ([request.URL.host isEqualToString:ReflectReadyForMessage]) {
-            [self fetchQueueingCommands];
-        }
-        return NO;
-    }
-    
-    if ([_delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        return [_delegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
-    }
-    
-    return YES;
 }
 
 @end
