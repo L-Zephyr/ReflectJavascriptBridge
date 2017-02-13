@@ -30,10 +30,8 @@ function reflectJavascriptBridgeRegisterFunction(name, func) {
     window.ReflectJavascriptBridge[name] = func;
   } else if (window.RJBRegisteredFunctions) {
     window.RJBRegisteredFunctions.push({name: name, func: func});
-    console.log("push to functions");
   } else {
     window.RJBRegisteredFunctions = [{name: name, func: func}];
-    console.log("create functions");
   }
 }
 ```
