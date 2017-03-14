@@ -13,6 +13,8 @@
 
 @interface ReflectJavascriptBridge : NSObject
 
+@property (nonatomic) BOOL logEnable;
+
 /**
  初始化ReflectJavascriptBridge对象
 
@@ -49,6 +51,7 @@
 
 // Subscript
 - (id)objectForKeyedSubscript:(id)key;
-- (void)setObject:(id<ReflectBridgeExport>)object forKeyedSubscript:(id<NSCopying>)aKey;
+
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey;
 
 @end

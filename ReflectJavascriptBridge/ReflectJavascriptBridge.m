@@ -31,7 +31,7 @@
     } else if ([webView isKindOfClass:[WKWebView class]]) {
         return [[RJBWKWebViewBridge alloc] initWithWebView:webView delegate:delegate];
     } else {
-        NSLog(@"[RJB]webView should be `UIWebView` or `WKWebView`");
+        NSLog(@"[RJB]: webView should be `UIWebView` or `WKWebView`");
         return nil;
     }
 }
@@ -48,13 +48,15 @@
     NSLog(@"[RJB]: implement `callJsMethod:withArgs:completionHandler:` in subclass");
 }
 
+#pragma mark - Private method
+
 /**
  向JS中注册一个Native对象
 
  @param obj  native的对象实例
  @param name 实例名称
  */
-- (void)bridgeObjectToJs:(id<ReflectBridgeExport>)obj name:(NSString *)name {
+- (void)bridgeObjectToJs:(id)obj name:(NSString *)name {
     NSString *jsObj = [self convertNativeObjectToJs:obj identifier:name];
     NSString *js = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.addObject(%@,\"%@\");", jsObj, name];
     [self callJs:js completionHandler:nil];
@@ -66,7 +68,7 @@
  @param object native对象实例
  @return       一段描述JS对象的JS代码
  */
-- (NSString *)convertNativeObjectToJs:(id<ReflectBridgeExport>)object identifier:(NSString *)identifier {
+- (NSString *)convertNativeObjectToJs:(id)object identifier:(NSString *)identifier {
     NSString *jsObject = [RJBObjectConvertor convertToJs:object identifier:identifier];
     return jsObject;
 }
@@ -112,14 +114,20 @@
  */
 - (void)injectJs {
     [self callJs:ReflectJavascriptBridgeInjectedJS() completionHandler:^(id result, NSError *error) {
-        if (!error) { // TODO: handle error
+        if (!error) {
             _injectJsFinished = YES;
             [_waitingObjects enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, id<ReflectBridgeExport>  _Nonnull obj, BOOL * _Nonnull stop) {
                 [self setObject:obj forKeyedSubscript:key];
             }];
             [_waitingObjects removeAllObjects];
+        } else {
+            NSLog(@"[RJB]: inject js code fail: %@", error);
         }
     }];
+}
+
+- (void)setLogEnable:(BOOL)logEnable {
+    rjb_logEnable = logEnable;
 }
 
 #pragma mark - Initialize
@@ -129,6 +137,7 @@
     if (self) {
         _reflectObjects = [NSMutableDictionary dictionary];
         _waitingObjects = [NSMutableDictionary dictionary];
+        _bridgedBlocks = [NSMutableDictionary dictionary];
         _commands = [NSMutableArray array];
     }
     return self;
@@ -143,9 +152,9 @@
     return _reflectObjects[key];
 }
 
-- (void)setObject:(id<ReflectBridgeExport>)object forKeyedSubscript:(id<NSCopying>)aKey {
-    if ([object conformsToProtocol:objc_getProtocol("ReflectBridgeExport")] == NO) {
-        NSLog(@"object not conform to protocol ReflectBridgeExport");
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey {
+    if (![object conformsToProtocol:objc_getProtocol("ReflectBridgeExport")] && ![object isKindOfClass:NSClassFromString(@"NSBlock")]) {
+        NSLog(@"[RJB]: object should be a block or confirms to ReflectBridgeExport");
         return;
     }
     

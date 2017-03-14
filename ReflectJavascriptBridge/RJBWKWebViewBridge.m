@@ -52,7 +52,7 @@
 
 - (void)callJsMethod:(NSString *)methodName withArgs:(NSArray *)args completionHandler:(void (^)(id, NSError *))handler {
     if (!self.injectJsFinished) {
-        NSLog(@"javascript initialize not complete!");
+        NSLog(@"[RJB]: javascript initialize not complete!");
         if (handler != nil) {
             handler(nil, [NSError errorWithDomain:@"javascript initialize not complete!" code:0 userInfo:nil]);
         }

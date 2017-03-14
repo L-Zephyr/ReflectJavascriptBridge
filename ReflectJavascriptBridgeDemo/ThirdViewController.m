@@ -8,6 +8,7 @@
 
 #import "ThirdViewController.h"
 #import "ReflectJavascriptBridge.h"
+#import <WebKit/WebKit.h>
 
 @protocol NavigatorProtocol <ReflectBridgeExport>
 
@@ -17,8 +18,8 @@
 
 @interface ThirdViewController () <UIWebViewDelegate, NavigatorProtocol>
 
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (nonnull) ReflectJavascriptBridge *bridge;
+@property (nonatomic) WKWebView *webView;
+@property (nonatomic) ReflectJavascriptBridge *bridge;
 
 @end
 
@@ -27,9 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationController.navigationBar.backgroundColor = [UIColor blueColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor grayColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    _webView.delegate = self;
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [self.view addSubview:_webView];
     _webView.backgroundColor = [UIColor clearColor];
     
     _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
@@ -48,11 +51,11 @@
 #pragma mark - Export method
 
 - (void)setOffset:(NSInteger)offset {
-    if (offset > 128) {
-        offset = 128;
+    if (offset > 256) {
+        offset = 256;
     }
     NSLog(@"change alpha %ld", offset);
-    CGFloat alpha = 1 - ((CGFloat)offset / 128.0f);
+    CGFloat alpha = 1 - ((CGFloat)offset / 256.0f);
     self.navigationController.navigationBar.alpha = alpha;
 }
 

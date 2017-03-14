@@ -18,6 +18,6 @@
  @param identifier 实例对象的名称
  @return           描述一个JS对象的JS代码
  */
-+ (NSString *)convertToJs:(id<ReflectBridgeExport>)object identifier:(NSString *)identifier;
++ (NSString *)convertToJs:(id)object identifier:(NSString *)identifier;
 
 @end

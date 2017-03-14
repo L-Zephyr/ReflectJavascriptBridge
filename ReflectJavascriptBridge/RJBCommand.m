@@ -33,16 +33,13 @@
         return nil;
     }
     
-    // 类或方法不存在
+    // 类不存在
     Class cls = objc_getClass([clsName cStringUsingEncoding:NSUTF8StringEncoding]);
     if (cls == nil) {
+        NSLog(@"[RJB]: class `%@` not exists!", clsName);
         return nil;
     }
-    // TODO: 暂时只考虑实例方法
-//    if (class_respondsToSelector(cls, NSSelectorFromString(method)) == NO) {
-//        return nil;
-//    }
-    
+
     return [[RJBCommand alloc] initWithClass:clsName
                                       method:method
                                   identifier:identifier
@@ -66,7 +63,7 @@
             invocation = [NSInvocation invocationWithMethodSignature:classSign];
             invocation.target = [instance class];
         } else {
-            NSLog(@"method '%@' not implement in class '%@'", _methodName, _className);
+            NSLog(@"[RJB]: method '%@' not implement in class '%@'", _methodName, _className);
             return;
         }
     }
@@ -89,7 +86,7 @@
                 double param = [(NSString *)arg doubleValue];
                 [invocation setArgument:&param atIndex:paramIndex];
             } else {
-                NSLog(@"argument not support type");
+                NSLog(@"[RJB]: argument not support type");
                 return;
             }
         } else if ([arg isKindOfClass:[NSNumber class]]) {
@@ -106,7 +103,7 @@
                 double param = [(NSNumber *)arg doubleValue];
                 [invocation setArgument:&param atIndex:paramIndex];
             } else {
-                NSLog(@"argument not support type");
+                NSLog(@"[RJB]: argument not support type");
                 return;
             }
         }

@@ -18,7 +18,7 @@
 
 @implementation RJBObjectConvertor
 
-+ (NSString *)convertToJs:(id<ReflectBridgeExport>)object identifier:(NSString *)identifier {
++ (NSString *)convertToJs:(id)object identifier:(NSString *)identifier {
     RJBObjectConvertor *convertor = [[RJBObjectConvertor alloc] initWithObject:object idenetifier:identifier];
     return [convertor toJs];
 }
@@ -26,55 +26,70 @@
 - (instancetype)initWithObject:(id<ReflectBridgeExport>)object idenetifier:(NSString *)identifier {
     self = [super init];
     if (self) {
-        _exportMethodMaps = [[NSMutableDictionary alloc] init];
         _js = [[NSMutableString alloc] init];
-        [_js appendString:@"{"];
-        
-        // find out all protocol that inherited from `ReflectBridgeExport`
-        NSMutableArray<Protocol *> *exportProtocols = [NSMutableArray array];
-        unsigned int outCount = 0;
-        Protocol * __unsafe_unretained *protos = class_copyProtocolList(object_getClass(object), &outCount);
-        for (unsigned int index = 0; index < outCount; ++index) {
-            Protocol *proto = protos[index];
-            if (protocol_conformsToProtocol(proto, objc_getProtocol("ReflectBridgeExport"))) {
-                [exportProtocols addObject:proto];
-            }
+        if ([object conformsToProtocol:objc_getProtocol("ReflectBridgeExport")]) {
+            [self convertObject:object identifier:identifier];
+        } else if ([object isKindOfClass:NSClassFromString(@"NSBlock")]) {
+            [self convertBlock:object identifier:identifier];
         }
-        
-        NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
-        
-        NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // jsName -> nativeName
-        NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
-        [_js appendFormat:@"className:\"%@\",", clsName];
-        [_js appendFormat:@"identifier:\"%@\",", identifier];
-        
-        // 添加js方法
-        for (NSDictionary *nativeMethodInfo in methodInfos) {
-            NSString *nativeMethodName = nativeMethodInfo[@"name"];
-            NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodName];
-            NSString *returnType = nativeMethodInfo[@"returnType"];
-            NSString *jsMethodName = jsMethodInfo[@"name"];
-            NSString *jsMethodParam = jsMethodInfo[@"paramStr"];
-            
-            // Export as
-            if ([_exportMethodMaps.allKeys containsObject:nativeMethodName]) {
-                jsMethodName = _exportMethodMaps[nativeMethodName];
-            }
-            
-            NSString *jsMethodBody = [self jsMethodBodyWithName:jsMethodName returnType:returnType];
-            
-            [_js appendFormat:@"%@:function(%@){%@},", jsMethodName, jsMethodParam, jsMethodBody];
-            [methodMaps setObject:nativeMethodName forKey:jsMethodName];
-        }
-        
-        NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
-        if (data.length != 0) {
-            [_js appendFormat:@"maps:%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-        }
-        
-        [_js appendString:@"}"];
     }
     return self;
+}
+
+- (void)convertObject:(id)object identifier:(NSString *)identifier {
+    _exportMethodMaps = [[NSMutableDictionary alloc] init];
+    [_js appendString:@"{"];
+    
+    // find out all protocol that inherited from `ReflectBridgeExport`
+    NSMutableArray<Protocol *> *exportProtocols = [NSMutableArray array];
+    unsigned int outCount = 0;
+    Protocol * __unsafe_unretained *protos = class_copyProtocolList(object_getClass(object), &outCount);
+    for (unsigned int index = 0; index < outCount; ++index) {
+        Protocol *proto = protos[index];
+        if (protocol_conformsToProtocol(proto, objc_getProtocol("ReflectBridgeExport"))) {
+            [exportProtocols addObject:proto];
+        }
+    }
+    
+    NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
+    
+    NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // jsName -> nativeName
+    NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
+    [_js appendFormat:@"className:\"%@\",", clsName];
+    [_js appendFormat:@"identifier:\"%@\",", identifier];
+    
+    // 添加js方法
+    for (NSDictionary *nativeMethodInfo in methodInfos) {
+        NSString *nativeMethodName = nativeMethodInfo[@"name"];
+        NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodName];
+        NSString *returnType = nativeMethodInfo[@"returnType"];
+        NSString *jsMethodName = jsMethodInfo[@"name"];
+        NSString *jsMethodParam = jsMethodInfo[@"paramStr"];
+        
+        // Export as
+        if ([_exportMethodMaps.allKeys containsObject:nativeMethodName]) {
+            jsMethodName = _exportMethodMaps[nativeMethodName];
+        }
+        
+        NSString *jsMethodBody = [self jsMethodBodyWithName:jsMethodName returnType:returnType];
+        
+        [_js appendFormat:@"%@:function(%@){%@},", jsMethodName, jsMethodParam, jsMethodBody];
+        [methodMaps setObject:nativeMethodName forKey:jsMethodName];
+    }
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
+    if (data.length != 0) {
+        [_js appendFormat:@"maps:%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+    }
+    
+    [_js appendString:@"}"];
+}
+
+- (void)convertBlock:(id)block identifier:(NSString *)identifier {
+    [_js appendString:@"function(){"];
+    
+    
+    [_js appendString:@"}"];
 }
 
 - (NSString *)toJs {
@@ -123,7 +138,7 @@
 }
 
 /**
- 返回转换后的JS方法名和参数
+ 将native方法转换成对应的js方法
 
  @param nativeMethod native方法名
  @return 返回一个字典，包括两个key: `name`和`paramStr`(如果有参数)

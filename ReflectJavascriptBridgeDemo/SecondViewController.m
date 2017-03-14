@@ -9,6 +9,7 @@
 #import "SecondViewController.h"
 #import "ReflectJavascriptBridge.h"
 #import "BridgeClass.h"
+#import <WebKit/WebKit.h>
 
 @protocol NavigationBarBridgeDelegate <ReflectBridgeExport>
 
@@ -31,13 +32,12 @@
     _webView.delegate = self;
     _webView.backgroundColor = [UIColor clearColor];
     
+    // 1. Create bridge to webView
     _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
     
+    // 2. bridge native instance to js, just like JavaScriptCore
     BridgeClass *obj = [[BridgeClass alloc] init];
     _bridge[@"nativeObject"] = obj;
-    
-//    NSURL *url = [NSURL URLWithString:@"http://localhost:3000/main.html"];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
     
     NSData *htmlData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"demo1" ofType:@"html"]];
     NSString *html = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
