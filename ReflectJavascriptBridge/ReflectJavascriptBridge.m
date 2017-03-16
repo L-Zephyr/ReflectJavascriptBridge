@@ -18,6 +18,7 @@
 
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
 @property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *waitingObjects; // wait for bridge
+@property (nonatomic) NSMutableDictionary<NSString *, id> *bridgedBlocks;
 @property (nonatomic) NSMutableArray<RJBCommand *> *commands;
 @property (nonatomic) BOOL injectJsFinished;
 

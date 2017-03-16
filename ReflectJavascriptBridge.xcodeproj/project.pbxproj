@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB06275E1E78216F00B5009E /* NSInvocation+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06275D1E78216F00B5009E /* NSInvocation+Block.m */; };
 		BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */; };
 		BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */; };
 		BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */; };
@@ -20,7 +21,6 @@
 		BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9151E346CC8009C1C64 /* RJBCommand.m */; };
 		BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */; };
 		BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */; };
-		BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */; };
 		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
 		BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* SecondViewController.m */; };
 		BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* SecondViewController.xib */; };
@@ -41,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB06275C1E78216F00B5009E /* NSInvocation+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+Block.h"; sourceTree = "<group>"; };
+		BB06275D1E78216F00B5009E /* NSInvocation+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+Block.m"; sourceTree = "<group>"; };
 		BBDB2EFE1E44BB17000515BD /* RJBWKWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBWKWebViewBridge.h; sourceTree = "<group>"; };
 		BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBWKWebViewBridge.m; sourceTree = "<group>"; };
 		BBDB2F011E44BB2E000515BD /* RJBUIWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBUIWebViewBridge.h; sourceTree = "<group>"; };
@@ -66,7 +68,6 @@
 		BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBObjectConvertor.m; sourceTree = "<group>"; };
 		BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeClass.h; sourceTree = "<group>"; };
 		BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgeClass.m; sourceTree = "<group>"; };
-		BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommandTest.m; sourceTree = "<group>"; };
 		BBDCD9251E35F15C009C1C64 /* RJBCommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBCommons.h; sourceTree = "<group>"; };
 		BBDCD9261E35F15C009C1C64 /* RJBCommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommons.m; sourceTree = "<group>"; };
 		BBDCD9301E388039009C1C64 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
@@ -131,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */,
-				BBDCD9221E34F56D009C1C64 /* RJBCommandTest.m */,
 				BBDCD8F31E346BFA009C1C64 /* Info.plist */,
 			);
 			path = ReflectJavascriptBridgeTests;
@@ -148,6 +148,8 @@
 				BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */,
 				BBDCD9251E35F15C009C1C64 /* RJBCommons.h */,
 				BBDCD9261E35F15C009C1C64 /* RJBCommons.m */,
+				BB06275C1E78216F00B5009E /* NSInvocation+Block.h */,
+				BB06275D1E78216F00B5009E /* NSInvocation+Block.m */,
 				BBDB2F041E44BD2C000515BD /* WebViewBridge */,
 			);
 			path = ReflectJavascriptBridge;
@@ -315,6 +317,7 @@
 				BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */,
 				BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */,
 				BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */,
+				BB06275E1E78216F00B5009E /* NSInvocation+Block.m in Sources */,
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
 				BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */,
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,
@@ -331,7 +334,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBDCD9231E34F56D009C1C64 /* RJBCommandTest.m in Sources */,
 				BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
