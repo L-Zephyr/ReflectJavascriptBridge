@@ -43,16 +43,29 @@ _bridge = [ReflectJavascriptBridge bridge:_webView delegate:self];
 
 - 类似`JavascriptCore`中的`JSExport`，你需要定义一个协议继承自`ReflectBridgeExport`，在这个协议中声明需要bridge到js的方法和属性，然后在你的类中实现这个协议，这个类的实例就可以被桥接到js中了
 
-- 如下，obj为该类的一个实例，使用下标语法将obj传递给js并命名为nativeObject
-```
-_bridge[@"nativeObject"] = obj;
-```
-之后在js中就可以直接使用nativeObject中的方法了
-```javascript
-ReflectJavascriptBridge.nativeObject.xxxx(num1, num2);
-```
-协议中声明的属性将被转换成相应的`setter`和`getter`方法  
-**注意**: _bridge对象中会保留一份obj的强引用，当心出现循环引用而导致内存泄露
+  如下，obj为该类的一个实例，使用下标语法将obj传递给js并命名为nativeObject
+
+  ```
+  _bridge[@"nativeObject"] = obj;
+  ```
+  之后在js中就可以直接使用nativeObject中的方法了
+  ```javascript
+  ReflectJavascriptBridge.nativeObject.xxxx(num1, num2);
+  ```
+  协议中声明的属性将被转换成相应的`setter`和`getter`方法  
+  **注意**: _bridge对象中会保留一份obj的强引用，当心出现循环引用而导致内存泄露
+
+- 也可以直接将block桥接到JS中
+  ```objective-c
+  _bridge[@"nativeBlock"] = ^(NSString *string) {
+        NSLog(@"call native block with param: %@", string);
+        return @"native string";
+    };
+  ```
+  在JS中直接调用该block即可
+  ```
+  ReflectJavascriptBridge.nativeBlock("hello");
+  ```
 
 - 如果native对象的方法有返回值，在js中调用该方法时可以通过闭包的方法来接收返回值，具体的做法是在方法参数的最后加上一个闭包用于接收返回值
 ```javascript
@@ -69,7 +82,3 @@ JSExportAs(add, - (NSInteger)add:(NSInteger)a b:(NSInteger)b); // 添加在协�
 ```
 
 - 目前方法参数支持的类型有：整型、浮点型、NSNumber、NSString
-
-##TODO
-1. 支持直接将block传递给js
-2. ...
