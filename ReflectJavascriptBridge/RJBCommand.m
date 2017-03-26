@@ -7,6 +7,7 @@
 //
 
 #import "RJBCommand.h"
+#import "RJBCommons.h"
 #import <objc/runtime.h>
 
 @interface RJBCommand()
@@ -29,7 +30,9 @@
     NSString *returnType = dic[@"returnType"];
     NSString *callbackId = dic[@"callbackId"];
     
-    if (clsName.length == 0 || method.length == 0) {
+
+    BOOL isBlock = [clsName isEqualToString:@"NSBlock"];
+    if (clsName.length == 0 || (method.length == 0 && !isBlock)) {
         return nil;
     }
     
@@ -48,32 +51,43 @@
                                   callbackId:callbackId];
 }
 
-- (void)execWithInstance:(id<ReflectBridgeExport>)instance bridge:(ReflectJavascriptBridge *)bridge {
+- (void)execWithInstance:(id)instance bridge:(ReflectJavascriptBridge *)bridge {
     NSInvocation *invocation = nil;
+    NSMethodSignature *sign = nil;
+    NSInteger paramOffset;
     
-    // 查找方法
-    SEL selector = NSSelectorFromString(_methodName);
-    NSMethodSignature *sign = [[instance class] instanceMethodSignatureForSelector:selector];
-    if (sign) { // 存在实例方法
+    if ([_className isEqualToString:@"NSBlock"]) {
+        sign = [NSMethodSignature signatureWithObjCTypes:RJB_signatureForBlock(instance)];
         invocation = [NSInvocation invocationWithMethodSignature:sign];
         invocation.target = instance;
-    } else { // 否则查找类方法
-        NSMethodSignature *classSign = [[instance class] methodSignatureForSelector:selector];
-        if (classSign) {
-            invocation = [NSInvocation invocationWithMethodSignature:classSign];
-            invocation.target = [instance class];
-        } else {
-            NSLog(@"[RJB]: method '%@' not implement in class '%@'", _methodName, _className);
-            return;
+        paramOffset = 1;
+    } else {
+        // 查找方法
+        SEL selector = NSSelectorFromString(_methodName);
+        paramOffset = 2;
+        sign = [[instance class] instanceMethodSignatureForSelector:selector];
+        if (sign) { // 存在实例方法
+            invocation = [NSInvocation invocationWithMethodSignature:sign];
+            invocation.target = instance;
+        } else { // 否则查找类方法
+            sign = [[instance class] methodSignatureForSelector:selector];
+            if (sign) {
+                invocation = [NSInvocation invocationWithMethodSignature:sign];
+                invocation.target = [instance class];
+            } else {
+                NSLog(@"[RJB]: method '%@' not implement in class '%@'", _methodName, _className);
+                return;
+            }
         }
+        invocation.selector = selector;
     }
-    invocation.selector = selector;
     
-    for (NSInteger paramIndex = 2; paramIndex < [sign numberOfArguments]; ++paramIndex) {
-        if (_args.count <= paramIndex - 2) {
+    
+    for (NSInteger paramIndex = paramOffset; paramIndex < [sign numberOfArguments]; ++paramIndex) {
+        if (_args.count <= paramIndex - paramOffset) {
             break;
         }
-        id arg = _args[paramIndex - 2];
+        id arg = _args[paramIndex - paramOffset];
         NSString *type = [NSString stringWithUTF8String:[sign getArgumentTypeAtIndex:paramIndex]]; // expected type
         
         if ([arg isKindOfClass:[NSString class]]) {

@@ -39,6 +39,12 @@
     BridgeClass *obj = [[BridgeClass alloc] init];
     _bridge[@"nativeObject"] = obj;
     
+    // 3. bridge block to js
+    _bridge[@"block"] = ^(NSString *string) {
+        NSLog(@"call native block with param: %@", string);
+        return @"block return string";
+    };
+    
     NSData *htmlData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"demo1" ofType:@"html"]];
     NSString *html = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
     [_webView loadHTMLString:html baseURL:nil];

@@ -10,6 +10,32 @@
 
 #define ReflectJSCode(x) #x
 
+struct Block_literal_1 {
+    void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
+    int flags;
+    int reserved;
+    void (*invoke)(void *, ...);
+    struct Block_descriptor_1 {
+        unsigned long int reserved;     // NULL
+        unsigned long int size;         // sizeof(struct Block_literal_1)
+        // optional helper functions
+        // void (*copy_helper)(void *dst, void *src);     // IFF (1<<25)
+        // void (*dispose_helper)(void *src);             // IFF (1<<25)
+        // required ABI.2010.3.16
+        // const char *signature;                         // IFF (1<<30)
+        void* rest[1];
+    } *descriptor;
+    // imported variables
+};
+
+enum {
+    BLOCK_HAS_COPY_DISPOSE =  (1 << 25),
+    BLOCK_HAS_CTOR =          (1 << 26), // helpers have C++ code
+    BLOCK_IS_GLOBAL =         (1 << 28),
+    BLOCK_HAS_STRET =         (1 << 29), // IFF BLOCK_HAS_SIGNATURE
+    BLOCK_HAS_SIGNATURE =     (1 << 30),
+};
+
 NSString *ReflectJavascriptBridgeInjectedJS() {
     return @ReflectJSCode(
                           ;(function() {
@@ -77,18 +103,19 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         // 添加一条command并通知native
         function sendCommand(objc, method, args, returnType) {
             var command = {
-                "className": objc["className"], // 这个是Export的类名
-                "identifier": objc["identifier"], // 唯一的ID,这个ID是实例对象的名称
-                "method": objc.maps[method], // 调用的方法名
-                "args": args, // 参数
-                "returnType": returnType // 返回值类型
+                "className": objc["className"],
+                "identifier": objc["identifier"],
+                "args": args,
+                "returnType": returnType
             };
+            if (method) {
+                command["method"] = objc.maps[method];
+            }
             
             var lastArg = args[args.length - 1];
             if (returnType != 'v' && typeof lastArg === 'function') {
                 responseCallbacks[uniqueCallbackId] = lastArg;
-                command["callbackId"] = uniqueCallbackId;
-                ++uniqueCallbackId;
+                command["callbackId"] = uniqueCallbackId; ++uniqueCallbackId;
             }
             commandQueue.push(command);
             sendReadyToNative();
@@ -119,5 +146,18 @@ BOOL RJB_isFloat(NSString *type) {
 }
 
 BOOL RJB_isClass(NSString *type) {
-    return [type isEqualToString:@"@"];
+    return [type hasPrefix:@"@"];
+}
+
+const char *RJB_signatureForBlock(id block) {
+    struct Block_literal_1 *blockStruct = (__bridge void *)block;
+    struct Block_descriptor_1 *descriptor = blockStruct->descriptor;
+    if (blockStruct->flags & BLOCK_HAS_SIGNATURE) {
+        int offset = 0;
+        if(blockStruct->flags & BLOCK_HAS_COPY_DISPOSE)
+            offset += 2;
+        return (char*)(descriptor->rest[offset]);
+    } else {
+        return nil;
+    }
 }

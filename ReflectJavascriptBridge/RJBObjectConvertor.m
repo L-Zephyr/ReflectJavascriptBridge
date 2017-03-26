@@ -7,6 +7,7 @@
 //
 
 #import "RJBObjectConvertor.h"
+#import "RJBCommons.h"
 #import <objc/runtime.h>
 
 @interface RJBObjectConvertor()
@@ -36,6 +37,7 @@
     return self;
 }
 
+// 将实例对象转换成JS
 - (void)convertObject:(id)object identifier:(NSString *)identifier {
     _exportMethodMaps = [[NSMutableDictionary alloc] init];
     [_js appendString:@"{"];
@@ -85,9 +87,15 @@
     [_js appendString:@"}"];
 }
 
+// 将block转换成JS
 - (void)convertBlock:(id)block identifier:(NSString *)identifier {
     [_js appendString:@"function(){"];
     
+    NSString *sign = [NSString stringWithUTF8String:RJB_signatureForBlock(block)];
+    NSString *returnType = [sign substringWithRange:NSMakeRange(0, 1)];
+    NSString *blockInfo = [NSString stringWithFormat:@"{identifier: \"%@\", className: \"NSBlock\"}", identifier];
+    NSString *jsBody = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(%@, null, Array.from(arguments), \"%@\");", blockInfo, returnType];
+    [_js appendString:jsBody];
     
     [_js appendString:@"}"];
 }

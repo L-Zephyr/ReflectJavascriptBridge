@@ -16,8 +16,8 @@
 
 @interface ReflectJavascriptBridge() <UIWebViewDelegate>
 
-@property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *reflectObjects;
-@property (nonatomic) NSMutableDictionary<NSString *, id<ReflectBridgeExport>> *waitingObjects; // wait for bridge
+@property (nonatomic) NSMutableDictionary<NSString *, id> *reflectObjects;
+@property (nonatomic) NSMutableDictionary<NSString *, id> *waitingObjects; // wait for bridge
 @property (nonatomic) NSMutableDictionary<NSString *, id> *bridgedBlocks;
 @property (nonatomic) NSMutableArray<RJBCommand *> *commands;
 @property (nonatomic) BOOL injectJsFinished;
@@ -54,7 +54,7 @@
 /**
  向JS中注册一个Native对象
 
- @param obj  native的对象实例
+ @param obj  native的对象实例或block
  @param name 实例名称
  */
 - (void)bridgeObjectToJs:(id)obj name:(NSString *)name {

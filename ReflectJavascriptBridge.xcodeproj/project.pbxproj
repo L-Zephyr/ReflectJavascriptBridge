@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB06275E1E78216F00B5009E /* NSInvocation+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = BB06275D1E78216F00B5009E /* NSInvocation+Block.m */; };
 		BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */; };
 		BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */; };
 		BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */; };
@@ -41,8 +40,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BB06275C1E78216F00B5009E /* NSInvocation+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+Block.h"; sourceTree = "<group>"; };
-		BB06275D1E78216F00B5009E /* NSInvocation+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+Block.m"; sourceTree = "<group>"; };
 		BBDB2EFE1E44BB17000515BD /* RJBWKWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBWKWebViewBridge.h; sourceTree = "<group>"; };
 		BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBWKWebViewBridge.m; sourceTree = "<group>"; };
 		BBDB2F011E44BB2E000515BD /* RJBUIWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBUIWebViewBridge.h; sourceTree = "<group>"; };
@@ -148,8 +145,6 @@
 				BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */,
 				BBDCD9251E35F15C009C1C64 /* RJBCommons.h */,
 				BBDCD9261E35F15C009C1C64 /* RJBCommons.m */,
-				BB06275C1E78216F00B5009E /* NSInvocation+Block.h */,
-				BB06275D1E78216F00B5009E /* NSInvocation+Block.m */,
 				BBDB2F041E44BD2C000515BD /* WebViewBridge */,
 			);
 			path = ReflectJavascriptBridge;
@@ -317,7 +312,6 @@
 				BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */,
 				BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */,
 				BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */,
-				BB06275E1E78216F00B5009E /* NSInvocation+Block.m in Sources */,
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
 				BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */,
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,

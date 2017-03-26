@@ -29,7 +29,8 @@ static BOOL rjb_logEnable = YES;
 // the js code to inject
 NSString *ReflectJavascriptBridgeInjectedJS();
 
-void RJB_log(NSString *log);
+// 获取block的签名
+const char *RJB_signatureForBlock(id block);
 
 // 检测类型编码type是否为整型类型
 BOOL RJB_isInteger(NSString *type);

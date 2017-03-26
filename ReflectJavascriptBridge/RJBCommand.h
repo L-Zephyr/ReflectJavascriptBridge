@@ -27,6 +27,6 @@
 
  @param instance 执行该指令的实例对象
  */
-- (void)execWithInstance:(id<ReflectBridgeExport>)instance bridge:(ReflectJavascriptBridge *)bridge;
+- (void)execWithInstance:(id)instance bridge:(ReflectJavascriptBridge *)bridge;
 
 @end

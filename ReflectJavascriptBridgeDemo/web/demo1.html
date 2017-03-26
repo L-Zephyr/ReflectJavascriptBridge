@@ -59,6 +59,14 @@ var app = {
 	},
   changeProperty: function() {
     ReflectJavascriptBridge.nativeObject.setName("lzephyr");
+  },
+  callBlock: function() {
+    ReflectJavascriptBridge.block("hello", function(ret) {
+      var p = document.createElement("p");
+      p.innerHTML = "native return: " + ret;
+      var button = document.getElementById("blockButton");
+      document.getElementById("blockButton").parentNode.insertBefore(p, button);
+    });
   }
 }
   </script>
@@ -85,7 +93,8 @@ var app = {
   </div>
 
   <div>
-    <p>4. Call</p>
+    <p>4. Call native block</p>
+    <button onclick="app.callBlock()" id="blockButton">call block</button>
   </div>
 </body>
 </html>
