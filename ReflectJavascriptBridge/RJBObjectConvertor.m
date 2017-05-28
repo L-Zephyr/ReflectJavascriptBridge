@@ -8,6 +8,7 @@
 
 #import "RJBObjectConvertor.h"
 #import "RJBCommons.h"
+#import "ReflectJavascriptBridge.h"
 #import <objc/runtime.h>
 
 @interface RJBObjectConvertor()
@@ -24,7 +25,7 @@
     return [convertor toJs];
 }
 
-- (instancetype)initWithObject:(id<ReflectBridgeExport>)object idenetifier:(NSString *)identifier {
+- (instancetype)initWithObject:(id)object idenetifier:(NSString *)identifier {
     self = [super init];
     if (self) {
         _js = [[NSMutableString alloc] init];
@@ -39,13 +40,14 @@
 
 // 将实例对象转换成JS
 - (void)convertObject:(id)object identifier:(NSString *)identifier {
+    Class cls = object_getClass(object);
     _exportMethodMaps = [[NSMutableDictionary alloc] init];
     [_js appendString:@"{"];
     
-    // find out all protocol that inherited from `ReflectBridgeExport`
+    // find out all protocol that inherited from `PluginExport`
     NSMutableArray<Protocol *> *exportProtocols = [NSMutableArray array];
     unsigned int outCount = 0;
-    Protocol * __unsafe_unretained *protos = class_copyProtocolList(object_getClass(object), &outCount);
+    Protocol * __unsafe_unretained *protos = class_copyProtocolList(cls, &outCount);
     for (unsigned int index = 0; index < outCount; ++index) {
         Protocol *proto = protos[index];
         if (protocol_conformsToProtocol(proto, objc_getProtocol("ReflectBridgeExport"))) {
@@ -53,18 +55,19 @@
         }
     }
     
+    // 获取所有bridge到js中的方法
     NSArray<NSDictionary *> *methodInfos = [self fetchMethodInfosFromProtocols:exportProtocols];
     
     NSMutableDictionary *methodMaps = [NSMutableDictionary dictionary]; // jsName -> nativeName
-    NSString *clsName = [NSString stringWithUTF8String:class_getName(object_getClass(object))];
-    [_js appendFormat:@"className:\"%@\",", clsName];
-    [_js appendFormat:@"identifier:\"%@\",", identifier];
+    NSString *clsName = [NSString stringWithUTF8String:class_getName(cls)];
+    [_js appendFormat:@"__className:\"%@\",", clsName];
+    [_js appendFormat:@"__identifier:\"%@\",", identifier];
     
     // 添加js方法
     for (NSDictionary *nativeMethodInfo in methodInfos) {
         NSString *nativeMethodName = nativeMethodInfo[@"name"];
         NSDictionary *jsMethodInfo = [self convertNativeMethodToJs:nativeMethodName];
-        NSString *returnType = nativeMethodInfo[@"returnType"];
+        NSMethodSignature *sign = nativeMethodInfo[@"signature"];
         NSString *jsMethodName = jsMethodInfo[@"name"];
         NSString *jsMethodParam = jsMethodInfo[@"paramStr"];
         
@@ -73,7 +76,7 @@
             jsMethodName = _exportMethodMaps[nativeMethodName];
         }
         
-        NSString *jsMethodBody = [self jsMethodBodyWithName:jsMethodName returnType:returnType];
+        NSString *jsMethodBody = [self jsMethodBodyWithName:jsMethodName signature:sign];
         
         [_js appendFormat:@"%@:function(%@){%@},", jsMethodName, jsMethodParam, jsMethodBody];
         [methodMaps setObject:nativeMethodName forKey:jsMethodName];
@@ -81,7 +84,7 @@
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:methodMaps options:NSJSONWritingPrettyPrinted error:nil];
     if (data.length != 0) {
-        [_js appendFormat:@"maps:%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+        [_js appendFormat:@"__maps:%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
     }
     
     [_js appendString:@"}"];
@@ -91,10 +94,10 @@
 - (void)convertBlock:(id)block identifier:(NSString *)identifier {
     [_js appendString:@"function(){"];
     
-    NSString *sign = [NSString stringWithUTF8String:RJB_signatureForBlock(block)];
-    NSString *returnType = [sign substringWithRange:NSMakeRange(0, 1)];
-    NSString *blockInfo = [NSString stringWithFormat:@"{identifier: \"%@\", className: \"NSBlock\"}", identifier];
-    NSString *jsBody = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(%@, null, Array.from(arguments), \"%@\");", blockInfo, returnType];
+    NSMethodSignature *sign = [NSMethodSignature signatureWithObjCTypes:RJB_signatureForBlock(block)];
+    NSString *returnType = [[NSString stringWithUTF8String:sign.methodReturnType] substringToIndex:1];
+    NSString *blockInfo = [NSString stringWithFormat:@"{__identifier: \"%@\", __className: \"NSBlock\"}", identifier];
+    NSString *jsBody = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(%@, null, %lu, Array.prototype.slice.call(arguments), \"%@\");", blockInfo, sign.numberOfArguments - 1, returnType];
     [_js appendString:jsBody];
     
     [_js appendString:@"}"];
@@ -108,9 +111,9 @@
 
 /**
  获取协议中定义的所有方法的名称和返回值类型
-
+ 
  @param protoList 包含Protocol的数组
- @return          方法信息数组，包含两个key: name和returnType
+ @return          方法信息数组，包含两个key: name和signature
  */
 - (NSArray<NSDictionary *> *)fetchMethodInfosFromProtocols:(NSArray<Protocol *> *)protoList {
     NSMutableArray<NSDictionary *> *methods = [NSMutableArray array];
@@ -125,7 +128,7 @@
             for (int desIndex = 0; desIndex < count; ++desIndex) {
                 struct objc_method_description des = desList[desIndex];
                 NSString *methodName = [NSString stringWithUTF8String:sel_getName(des.name)];
-                NSString *returnType = [[NSString stringWithUTF8String:des.types] substringWithRange:NSMakeRange(0, 1)];
+                NSMethodSignature *sign = [NSMethodSignature signatureWithObjCTypes:des.types];
                 if ([methodName containsString:@"__JS_EXPORT_AS__"]) {
                     NSArray *arr = [methodName componentsSeparatedByString:@"__JS_EXPORT_AS__"];
                     if (arr.count == 2) { // first: original name, last: exported name
@@ -133,7 +136,7 @@
                         continue;
                     }
                 }
-                [methods addObject:@{@"name": methodName, @"returnType": returnType}];
+                [methods addObject:@{@"name": methodName, @"signature": sign}];
             }
             free(desList);
         }
@@ -141,13 +144,14 @@
     return [methods copy];
 }
 
-- (NSString *)jsMethodBodyWithName:(NSString *)methodName returnType:(NSString *)returnType {
-    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", Array.from(arguments),'%@');", methodName, returnType];
+- (NSString *)jsMethodBodyWithName:(NSString *)methodName signature:(NSMethodSignature *)sign {
+    NSString *retType = [[NSString stringWithUTF8String:sign.methodReturnType] substringToIndex:1];
+    return [NSString stringWithFormat:@"window.ReflectJavascriptBridge.sendCommand(this, \"%@\", %lu,  Array.prototype.slice.call(arguments),'%@');", methodName, sign.numberOfArguments - 2, retType];
 }
 
 /**
  将native方法转换成对应的js方法
-
+ 
  @param nativeMethod native方法名
  @return 返回一个字典，包括两个key: `name`和`paramStr`(如果有参数)
  */
@@ -182,7 +186,7 @@
 
 /**
  将字符串的首字母大写
-
+ 
  @param string 原字符串
  @return       处理后的字符创
  */

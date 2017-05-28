@@ -7,6 +7,7 @@
 //
 
 #import "RJBCommons.h"
+#import "ReflectJavascriptBridge.h"
 
 #define ReflectJSCode(x) #x
 
@@ -37,8 +38,7 @@ enum {
 };
 
 NSString *ReflectJavascriptBridgeInjectedJS() {
-    return @ReflectJSCode(
-                          ;(function() {
+    return @ReflectJSCode(;(function() {
         'use strict';
         if (window.ReflectJavascriptBridge) {
             return;
@@ -91,6 +91,7 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
         // 有新的command时向native发送消息,通知native获取command
         function sendReadyToNative() {
             iFrame.src = requestMessage;
+            // window.webkit.messageHandlers._ReadyForCommands_.postMessage(null);
         }
         
         // 该方法由native调用，返回所有的commands
@@ -100,23 +101,46 @@ NSString *ReflectJavascriptBridgeInjectedJS() {
             return json;
         }
         
-        // 添加一条command并通知native
-        function sendCommand(objc, method, args, returnType) {
-            var command = {
-                "className": objc["className"],
-                "identifier": objc["identifier"],
-                "args": args,
-                "returnType": returnType
-            };
-            if (method) {
-                command["method"] = objc.maps[method];
+        // 添加一条command并通知native，该函数由Native生成的JS代码调用
+        function sendCommand(objc, jsMethod, methodArgCount, args, returnType) {
+            // 将参数转换成json
+            var argList = [];
+            for (var i = 0; i < methodArgCount && i < args.length; ++i) {
+                var arg = args[i];
+                var actualArg = {};
+                if (typeof arg === 'number') { // 数字
+                    actualArg["type"] = 0;
+                    actualArg["data"] = arg;
+                } else if (typeof arg === 'string') { // 字符串
+                    actualArg["type"] = 1;
+                    actualArg["data"] = arg;
+                } else if (typeof arg == 'object') { // 字典或数组
+                    actualArg["type"] = 2;
+                    actualArg["data"] = JSON.stringify(arg);
+                } else if (typeof arg === 'function') { // 闭包
+                    actualArg["type"] = 3;
+                    actualArg["data"] = uniqueCallbackId;
+                    responseCallbacks[uniqueCallbackId++] = arg;
+                }
+                argList.push(actualArg);
             }
             
-            var lastArg = args[args.length - 1];
-            if (returnType != 'v' && typeof lastArg === 'function') {
-                responseCallbacks[uniqueCallbackId] = lastArg;
-                command["callbackId"] = uniqueCallbackId; ++uniqueCallbackId;
+            var command = {
+                "className": objc["__className"],
+                "identifier": objc["__identifier"],
+                "args": argList,
+                "returnType": returnType
+            };
+            // 如果是block的话没有jsMethod
+            if (jsMethod) {
+                command["method"] = objc.__maps[jsMethod];
             }
+            // 接收返回值
+            if (args.length > methodArgCount) {
+                command["callbackId"] = uniqueCallbackId;
+                responseCallbacks[uniqueCallbackId++] = args[args.length - 1];
+            }
+            
             commandQueue.push(command);
             sendReadyToNative();
         }
@@ -141,8 +165,11 @@ BOOL RJB_isUnsignedInteger(NSString *type) {
 }
 
 BOOL RJB_isFloat(NSString *type) {
-    NSString *floatEncoding = @"fd";
-    return type.length == 1 && [floatEncoding containsString:type];
+    return [type isEqualToString:@"f"];
+}
+
+BOOL RJB_isDouble(NSString *type) {
+    return [type isEqualToString:@"d"];
 }
 
 BOOL RJB_isClass(NSString *type) {

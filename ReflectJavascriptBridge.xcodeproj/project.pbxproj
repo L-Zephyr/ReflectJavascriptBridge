@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB7B15B11E93918100BBD5E8 /* RJBCommandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B15B01E93918100BBD5E8 /* RJBCommandTest.m */; };
+		BBCFC22A1EDB0786003F932E /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = BBCFC2291EDB0786003F932E /* test.html */; };
+		BBCFC22D1EDB0B30003F932E /* NativeBridgeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCFC22C1EDB0B30003F932E /* NativeBridgeObject.m */; };
 		BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */; };
 		BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDB2F021E44BB2E000515BD /* RJBUIWebViewBridge.m */; };
 		BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */; };
@@ -19,14 +22,11 @@
 		BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9111E346C30009C1C64 /* ReflectJavascriptBridge.m */; };
 		BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9151E346CC8009C1C64 /* RJBCommand.m */; };
 		BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */; };
-		BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */; };
 		BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9261E35F15C009C1C64 /* RJBCommons.m */; };
-		BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* SecondViewController.m */; };
-		BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* SecondViewController.xib */; };
-		BBDCD93B1E40DFD6009C1C64 /* demo1.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9391E40DFD6009C1C64 /* demo1.html */; };
-		BBDCD93C1E40DFD6009C1C64 /* demo2.html in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD93A1E40DFD6009C1C64 /* demo2.html */; };
-		BBDCD9401E40DFFB009C1C64 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */; };
-		BBDCD9411E40DFFB009C1C64 /* ThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */; };
+		BBDCD9331E388039009C1C64 /* UIWebViewTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD9311E388039009C1C64 /* UIWebViewTestController.m */; };
+		BBDCD9341E388039009C1C64 /* UIWebViewTestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD9321E388039009C1C64 /* UIWebViewTestController.xib */; };
+		BBDCD9401E40DFFB009C1C64 /* WKWebViewTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDCD93E1E40DFFB009C1C64 /* WKWebViewTestController.m */; };
+		BBDCD9411E40DFFB009C1C64 /* WKWebViewTestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBDCD93F1E40DFFB009C1C64 /* WKWebViewTestController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB7B15B01E93918100BBD5E8 /* RJBCommandTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommandTest.m; sourceTree = "<group>"; };
+		BBCFC2291EDB0786003F932E /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
+		BBCFC22B1EDB0B30003F932E /* NativeBridgeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeBridgeObject.h; sourceTree = "<group>"; };
+		BBCFC22C1EDB0B30003F932E /* NativeBridgeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeBridgeObject.m; sourceTree = "<group>"; };
 		BBDB2EFE1E44BB17000515BD /* RJBWKWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBWKWebViewBridge.h; sourceTree = "<group>"; };
 		BBDB2EFF1E44BB17000515BD /* RJBWKWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBWKWebViewBridge.m; sourceTree = "<group>"; };
 		BBDB2F011E44BB2E000515BD /* RJBUIWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBUIWebViewBridge.h; sourceTree = "<group>"; };
@@ -63,18 +67,14 @@
 		BBDCD9151E346CC8009C1C64 /* RJBCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommand.m; sourceTree = "<group>"; };
 		BBDCD9171E346CD9009C1C64 /* RJBObjectConvertor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBObjectConvertor.h; sourceTree = "<group>"; };
 		BBDCD9181E346CD9009C1C64 /* RJBObjectConvertor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBObjectConvertor.m; sourceTree = "<group>"; };
-		BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgeClass.h; sourceTree = "<group>"; };
-		BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgeClass.m; sourceTree = "<group>"; };
 		BBDCD9251E35F15C009C1C64 /* RJBCommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJBCommons.h; sourceTree = "<group>"; };
 		BBDCD9261E35F15C009C1C64 /* RJBCommons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJBCommons.m; sourceTree = "<group>"; };
-		BBDCD9301E388039009C1C64 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		BBDCD9311E388039009C1C64 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
-		BBDCD9321E388039009C1C64 /* SecondViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecondViewController.xib; sourceTree = "<group>"; };
-		BBDCD9391E40DFD6009C1C64 /* demo1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo1.html; sourceTree = "<group>"; };
-		BBDCD93A1E40DFD6009C1C64 /* demo2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = demo2.html; sourceTree = "<group>"; };
-		BBDCD93D1E40DFFB009C1C64 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
-		BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
-		BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdViewController.xib; sourceTree = "<group>"; };
+		BBDCD9301E388039009C1C64 /* UIWebViewTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebViewTestController.h; sourceTree = "<group>"; };
+		BBDCD9311E388039009C1C64 /* UIWebViewTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWebViewTestController.m; sourceTree = "<group>"; };
+		BBDCD9321E388039009C1C64 /* UIWebViewTestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWebViewTestController.xib; sourceTree = "<group>"; };
+		BBDCD93D1E40DFFB009C1C64 /* WKWebViewTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewTestController.h; sourceTree = "<group>"; };
+		BBDCD93E1E40DFFB009C1C64 /* WKWebViewTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewTestController.m; sourceTree = "<group>"; };
+		BBDCD93F1E40DFFB009C1C64 /* WKWebViewTestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WKWebViewTestController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				BBDCD8F11E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m */,
+				BB7B15B01E93918100BBD5E8 /* RJBCommandTest.m */,
 				BBDCD8F31E346BFA009C1C64 /* Info.plist */,
 			);
 			path = ReflectJavascriptBridgeTests;
@@ -158,14 +159,14 @@
 				BBDCD9071E346C21009C1C64 /* ViewController.h */,
 				BBDCD9081E346C21009C1C64 /* ViewController.m */,
 				BBDCD9031E346C21009C1C64 /* Main.storyboard */,
-				BBDCD9301E388039009C1C64 /* SecondViewController.h */,
-				BBDCD9311E388039009C1C64 /* SecondViewController.m */,
-				BBDCD9321E388039009C1C64 /* SecondViewController.xib */,
-				BBDCD93D1E40DFFB009C1C64 /* ThirdViewController.h */,
-				BBDCD93E1E40DFFB009C1C64 /* ThirdViewController.m */,
-				BBDCD93F1E40DFFB009C1C64 /* ThirdViewController.xib */,
-				BBDCD91F1E34EFC8009C1C64 /* BridgeClass.h */,
-				BBDCD9201E34EFC8009C1C64 /* BridgeClass.m */,
+				BBDCD9301E388039009C1C64 /* UIWebViewTestController.h */,
+				BBDCD9311E388039009C1C64 /* UIWebViewTestController.m */,
+				BBDCD9321E388039009C1C64 /* UIWebViewTestController.xib */,
+				BBDCD93D1E40DFFB009C1C64 /* WKWebViewTestController.h */,
+				BBDCD93E1E40DFFB009C1C64 /* WKWebViewTestController.m */,
+				BBDCD93F1E40DFFB009C1C64 /* WKWebViewTestController.xib */,
+				BBCFC22B1EDB0B30003F932E /* NativeBridgeObject.h */,
+				BBCFC22C1EDB0B30003F932E /* NativeBridgeObject.m */,
 				BBDCD9381E40DFD6009C1C64 /* web */,
 				BBDCD9051E346C21009C1C64 /* Info.plist */,
 				BBDCD9061E346C21009C1C64 /* main.m */,
@@ -178,8 +179,7 @@
 		BBDCD9381E40DFD6009C1C64 /* web */ = {
 			isa = PBXGroup;
 			children = (
-				BBDCD9391E40DFD6009C1C64 /* demo1.html */,
-				BBDCD93A1E40DFD6009C1C64 /* demo2.html */,
+				BBCFC2291EDB0786003F932E /* test.html */,
 			);
 			path = web;
 			sourceTree = "<group>";
@@ -269,12 +269,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBDCD9411E40DFFB009C1C64 /* ThirdViewController.xib in Resources */,
-				BBDCD9341E388039009C1C64 /* SecondViewController.xib in Resources */,
+				BBDCD9411E40DFFB009C1C64 /* WKWebViewTestController.xib in Resources */,
+				BBDCD9341E388039009C1C64 /* UIWebViewTestController.xib in Resources */,
 				BBDCD90C1E346C21009C1C64 /* Main.storyboard in Resources */,
 				BBDCD90A1E346C21009C1C64 /* Assets.xcassets in Resources */,
-				BBDCD93B1E40DFD6009C1C64 /* demo1.html in Resources */,
-				BBDCD93C1E40DFD6009C1C64 /* demo2.html in Resources */,
+				BBCFC22A1EDB0786003F932E /* test.html in Resources */,
 				BBDCD90B1E346C21009C1C64 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,17 +308,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBDCD9331E388039009C1C64 /* SecondViewController.m in Sources */,
+				BBDCD9331E388039009C1C64 /* UIWebViewTestController.m in Sources */,
 				BBDCD90F1E346C21009C1C64 /* ViewController.m in Sources */,
 				BBDCD9271E35F15C009C1C64 /* RJBCommons.m in Sources */,
 				BBDCD9161E346CC8009C1C64 /* RJBCommand.m in Sources */,
-				BBDCD9211E34EFC8009C1C64 /* BridgeClass.m in Sources */,
 				BBDCD9121E346C30009C1C64 /* ReflectJavascriptBridge.m in Sources */,
-				BBDCD9401E40DFFB009C1C64 /* ThirdViewController.m in Sources */,
+				BBDCD9401E40DFFB009C1C64 /* WKWebViewTestController.m in Sources */,
 				BBDCD90E1E346C21009C1C64 /* main.m in Sources */,
 				BBDB2F001E44BB17000515BD /* RJBWKWebViewBridge.m in Sources */,
 				BBDB2F031E44BB2E000515BD /* RJBUIWebViewBridge.m in Sources */,
 				BBDCD9191E346CD9009C1C64 /* RJBObjectConvertor.m in Sources */,
+				BBCFC22D1EDB0B30003F932E /* NativeBridgeObject.m in Sources */,
 				BBDCD9091E346C21009C1C64 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB7B15B11E93918100BBD5E8 /* RJBCommandTest.m in Sources */,
 				BBDCD8F21E346BFA009C1C64 /* ReflectJavascriptBridgeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

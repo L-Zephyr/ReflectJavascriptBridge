@@ -8,10 +8,9 @@
 
 #import "ViewController.h"
 #import "ReflectJavascriptBridge.h"
-#import "BridgeClass.h"
 #import "RJBCommand.h"
-#import "SecondViewController.h"
-#import "ThirdViewController.h"
+#import "UIWebViewTestController.h"
+#import "WKWebViewTestController.h"
 
 @interface ViewController () <UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -51,9 +50,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     if (indexPath.row == 0) {
-        cell.textLabel.text = @"Interacting with js";
+        cell.textLabel.text = @"UIWebView";
     } else if (indexPath.row == 1) {
-        cell.textLabel.text = @"Changing view controller's appearance";
+        cell.textLabel.text = @"WKWebView";
     }
     return cell;
 }
@@ -61,10 +60,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        SecondViewController *vc = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+        UIWebViewTestController *vc = [[UIWebViewTestController alloc] initWithNibName:@"UIWebViewTestController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.row == 1) {
-        ThirdViewController *vc = [[ThirdViewController alloc] initWithNibName:@"ThirdViewController" bundle:nil];
+        WKWebViewTestController *vc = [[WKWebViewTestController alloc] initWithNibName:@"WKWebViewTestController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

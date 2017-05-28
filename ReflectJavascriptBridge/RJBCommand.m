@@ -10,6 +10,17 @@
 #import "RJBCommons.h"
 #import <objc/runtime.h>
 
+#define NumberType (0)
+#define StringType (1)
+#define ObjectType (2)
+#define FunctionType (3)
+#define Type (@"type")
+#define Data (@"data")
+
+#define PARAM_ERROR() \
+NSLog(@"[RJB]: 类:%@, 方法:%@, 参数类型错误", _className, _methodName);\
+return;
+
 @interface RJBCommand()
 
 @property (nonatomic) NSString *className;
@@ -30,7 +41,7 @@
     NSString *returnType = dic[@"returnType"];
     NSString *callbackId = dic[@"callbackId"];
     
-
+    
     BOOL isBlock = [clsName isEqualToString:@"NSBlock"];
     if (clsName.length == 0 || (method.length == 0 && !isBlock)) {
         return nil;
@@ -39,10 +50,10 @@
     // 类不存在
     Class cls = objc_getClass([clsName cStringUsingEncoding:NSUTF8StringEncoding]);
     if (cls == nil) {
-        NSLog(@"[RJB]: class `%@` not exists!", clsName);
+        NSLog(@"[RJB]: Class `%@` not exists!", clsName);
         return nil;
     }
-
+    
     return [[RJBCommand alloc] initWithClass:clsName
                                       method:method
                                   identifier:identifier
@@ -55,6 +66,8 @@
     NSInvocation *invocation = nil;
     NSMethodSignature *sign = nil;
     NSInteger paramOffset;
+    
+    NSMutableArray<RJBCallback> *argBlocks = [[NSMutableArray alloc] init];
     
     if ([_className isEqualToString:@"NSBlock"]) {
         sign = [NSMethodSignature signatureWithObjCTypes:RJB_signatureForBlock(instance)];
@@ -75,51 +88,75 @@
                 invocation = [NSInvocation invocationWithMethodSignature:sign];
                 invocation.target = [instance class];
             } else {
-                NSLog(@"[RJB]: method '%@' not implement in class '%@'", _methodName, _className);
+                NSLog(@"[RJB]: Method '%@' not implement in class '%@'", _methodName, _className);
                 return;
             }
         }
         invocation.selector = selector;
     }
     
-    
+    // 设置参数
     for (NSInteger paramIndex = paramOffset; paramIndex < [sign numberOfArguments]; ++paramIndex) {
         if (_args.count <= paramIndex - paramOffset) {
             break;
         }
-        id arg = _args[paramIndex - paramOffset];
+        
+        NSDictionary *argInfo = (NSDictionary *)_args[paramIndex - paramOffset];
         NSString *type = [NSString stringWithUTF8String:[sign getArgumentTypeAtIndex:paramIndex]]; // expected type
         
-        if ([arg isKindOfClass:[NSString class]]) {
-            if (RJB_isClass(type)) {
-                [invocation setArgument:&arg atIndex:paramIndex];
-            } else if (RJB_isInteger(type) || RJB_isUnsignedInteger(type)) {
-                long long param = [(NSString *)arg longLongValue];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else if (RJB_isFloat(type)) {
-                double param = [(NSString *)arg doubleValue];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else {
-                NSLog(@"[RJB]: argument not support type");
-                return;
-            }
-        } else if ([arg isKindOfClass:[NSNumber class]]) {
-            if (RJB_isClass(type)) {
-                NSString *param = [NSString stringWithFormat:@"%@", (NSString *)arg];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else if (RJB_isInteger(type)) {
-                long long param = [(NSNumber *)arg longLongValue];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else if (RJB_isUnsignedInteger(type)) {
-                unsigned long long param = [(NSNumber *)arg unsignedLongLongValue];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else if (RJB_isFloat(type)) {
-                double param = [(NSNumber *)arg doubleValue];
-                [invocation setArgument:&param atIndex:paramIndex];
-            } else {
-                NSLog(@"[RJB]: argument not support type");
-                return;
-            }
+        switch ([argInfo[Type] integerValue]) {
+                case NumberType: // 数字类型
+                if (RJB_isInteger(type) || RJB_isUnsignedInteger(type)) {
+                    long long param = [argInfo[Data] longLongValue];
+                    [invocation setArgument:&param atIndex:paramIndex];
+                } else if (RJB_isFloat(type)) {
+                    float param = [argInfo[Data] doubleValue];
+                    [invocation setArgument:&param atIndex:paramIndex];
+                } else if (RJB_isDouble(type)) {
+                    double param = [argInfo[Data] doubleValue];
+                    [invocation setArgument:&param atIndex:paramIndex];
+                } else {
+                    PARAM_ERROR();
+                }
+                break;
+                case StringType: // 字符串
+                if (RJB_isClass(type)) {
+                    NSString *param = (NSString *)argInfo[Data];
+                    [invocation setArgument:&param atIndex:paramIndex];
+                } else {
+                    PARAM_ERROR();
+                }
+                break;
+                case ObjectType: // 数组或字典
+                if (RJB_isClass(type)) {
+                    NSData *jsonData = [argInfo[Data] dataUsingEncoding:NSUTF8StringEncoding];
+                    id param = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
+                    if (param) {
+                        [invocation setArgument:&param atIndex:paramIndex];
+                    } else {
+                        PARAM_ERROR();
+                    }
+                } else {
+                    PARAM_ERROR();
+                }
+                break;
+                case FunctionType: // 闭包
+                if (RJB_isClass(type)) { // block类型
+                    NSString *callbackId = (NSString *)argInfo[Data];
+                    __weak typeof(self) weakSelf = self;
+                    RJBCallback block = ^(NSArray *params) {
+                        __strong typeof(self) strongSelf = weakSelf;
+                        [strongSelf callbackToJs:bridge callbackId:callbackId params:params];
+                    };
+                    [argBlocks addObject:block]; // 防止block被释放
+                    
+                    [invocation setArgument:&block atIndex:paramIndex];
+                } else {
+                    PARAM_ERROR();
+                }
+                break;
+            default:
+                break;
         }
     }
     
@@ -130,13 +167,9 @@
     if (![_returnType isEqualToString:@"v"] && _callbackId != nil) {
         NSString *value = nil;
         if ([_returnType isEqualToString:@"@"]) {
-            id ret = nil;
+            __unsafe_unretained id ret = nil;
             [invocation getReturnValue:&ret];
-            if ([ret isKindOfClass:[NSString class]]) {
-                value = [NSString stringWithFormat:@"\"%@\"", (NSString *)ret];
-            } else if ([ret isKindOfClass:[NSNumber class]]) {
-                value = [NSString stringWithFormat:@"%@", (NSNumber *)ret];
-            }
+            value = [NSString stringWithFormat:@"%@", ret];
         } else if ([_returnType isEqualToString:@"f"]) {
             float ret = 0;
             [invocation getReturnValue:&ret];
@@ -151,10 +184,28 @@
             value = [NSString stringWithFormat:@"%lld", ret];
         }
         
-        // 将返回值回调给JS
-        NSString *callbackJs = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.callback(\"%@\",%@);", _callbackId, value];
-        [bridge callJs:callbackJs completionHandler:nil];
+        if (_callbackId) {
+            [self callbackToJs:bridge callbackId:_callbackId params:@[value]];
+        }
     }
+}
+
+// 调用JS环境中的回调方法
+- (void)callbackToJs:(ReflectJavascriptBridge *)bridge callbackId:(NSString *)callbackId params:(NSArray *)params {
+    NSMutableString *value = [@"[" mutableCopy];
+    for (id param in params) {
+        if ([param isKindOfClass:[NSString class]]) {
+            [value appendFormat:@"\"%@\"", param];
+        } else if ([param isKindOfClass:[NSNumber class]]) {
+            [value appendFormat:@"%@", param];
+        } else {
+            NSLog(@"[RJB]: `RJBCallback`的参数只支持`NSString`和`NSNumber`类型");
+        }
+    }
+    [value appendString:@"]"];
+    
+    NSString *callbackJs = [NSString stringWithFormat:@"window.ReflectJavascriptBridge.callback(\"%@\",%@);", callbackId, value];
+    [bridge callJs:callbackJs completionHandler:nil];
 }
 
 - (instancetype)initWithClass:(NSString *)className

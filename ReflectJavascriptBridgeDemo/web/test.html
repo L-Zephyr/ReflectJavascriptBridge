@@ -1,0 +1,145 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+  	body {
+  		display: flex;
+  		flex-direction: column;
+  	}
+
+    * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none; /* Disable selection/copy in UIWebView */
+    }
+  </style>
+  <script type="text/javascript">
+
+;(function() {
+    if (window.ReflectJavascriptBridge) {
+        return;
+    }
+    var iFrame = document.createElement("iframe");
+    iFrame.style.display = 'none';
+    iFrame.src = "ReflectJavascriptBridge://_InjectJs_";
+    document.documentElement.appendChild(iFrame);
+    setTimeout(function() {
+        document.documentElement.removeChild(iFrame);
+    }, 0);
+})();
+
+function reflectJavascriptBridgeRegisterFunction(name, func) {
+    if (window.ReflectJavascriptBridge) {
+        window.ReflectJavascriptBridge[name] = func;
+    } else if (window.RJBRegisteredFunctions) {
+        window.RJBRegisteredFunctions.push({name: name, func: func});
+    } else {
+        window.RJBRegisteredFunctions = [{name: name, func: func}];
+    }
+}
+
+reflectJavascriptBridgeRegisterFunction("jsFunc", function(data1, data2) {
+	console.log("native call js function, arg" + data1 + " " + data2);
+})
+
+var app = {
+  sample1: function() {
+    ReflectJavascriptBridge.native.sample1();
+  },
+
+  sample2: function() {
+    ReflectJavascriptBridge.native.sample2("js参数");
+  },
+
+  sample3: function() {
+    ReflectJavascriptBridge.native.sample3(function(value) {
+      document.getElementById("sample3").innerHTML = '返回值: ' + value;
+    })
+  },
+
+  sample4: function() {
+    ReflectJavascriptBridge.native.sample4("abc", "def", function(value) {
+      document.getElementById("sample4").innerHTML = '返回值: ' + value;
+    })
+  },
+
+  sample5: function() {
+    ReflectJavascriptBridge.native.sample5(1, 1.5, 2.5, function(value) {
+      document.getElementById("sample5").innerHTML = '返回值: ' + value;
+    });
+  },
+
+  sample6: function() {
+    ReflectJavascriptBridge.native.sample6([1, 2, 3], {"key1" : 1, "key2" : 2}, function(value) {
+      document.getElementById("sample6").innerHTML = '返回值: ' + value;
+    })
+  },
+
+  sample7: function() {
+    ReflectJavascriptBridge.native.sample7(function(params) {
+      document.getElementById("sample7-1").innerHTML = "执行js闭包: " + params;
+    }, function(retValue) {
+      document.getElementById("sample7-2").innerHTML = '返回值: ' + retValue;
+    })
+  },
+
+  sample8: function() {
+    ReflectJavascriptBridge.block("js", "param", function(ret) {
+      document.getElementById("sample8").innerHTML = "返回值: " + ret;
+    })
+  }
+}
+  </script>
+</head>
+<body>
+  <div>
+  	<p>1. 调用本地方法，无参数，无返回值</p>
+  	<button onclick="app.sample1()">测试</button>
+    <p id="sample1"></p>
+  </div>
+
+  <div>
+  	<p>2. 调用本地方法，有string类型参数，无返回值</p>
+  	<button onclick="app.sample2()">测试</button>
+    <p id="sample2"></p>
+  </div>
+
+  <div>
+    <p>3. 调用原生方法，无参数，有string类型返回值</p>
+    <button onclick="app.sample3()">测试</button>
+    <p id="sample3"></p>
+  </div>
+
+  <div>
+    <p>4. 调用原生方法，多个string类型参数，有返回值</p>
+    <button onclick="app.sample4()">测试</button>
+    <p id="sample4"></p>
+  </div>  
+
+  <div>
+    <p>5. 调用原生方法，int、float、double类型参数，有返回值</p>
+    <button onclick="app.sample5()">测试</button>
+    <p id="sample5"></p>
+  </div>
+
+  <div>
+    <p>6. 调用原生方法，数组、字典类型参数，有返回值</p>
+    <button onclick="app.sample6()">测试</button>
+    <p id="sample6"></p>
+  </div>
+
+  <div>
+    <p>7. 调用原生方法，闭包类型参数，有返回值</p>
+    <button onclick="app.sample7()">测试</button>
+    <p id="sample7-1"></p>
+    <p id="sample7-2"></p>
+  </div>
+
+  <div>
+    <p>8. 调用原生Block</p>
+    <button onclick="app.sample8()">测试</button>
+    <p id="sample8"></p>
+  </div>
+
+</body>
+</html>

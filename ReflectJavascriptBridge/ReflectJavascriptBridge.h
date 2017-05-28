@@ -11,6 +11,21 @@
 #import <WebKit/WebKit.h>
 #import "RJBCommons.h"
 
+/**
+ 用于向JavaScript代码暴露接口的协议
+ */
+@protocol ReflectBridgeExport <NSObject>
+
+@end
+
+/**
+ JavaScript向
+
+ @param params 参数列表
+ */
+typedef void (^RJBCallback)(NSArray *params);
+
+
 @interface ReflectJavascriptBridge : NSObject
 
 @property (nonatomic) BOOL logEnable;

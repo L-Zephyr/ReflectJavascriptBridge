@@ -22,10 +22,6 @@ static NSString *const RJBBlockClassName = @"_NativeBlock_";
 
 static BOOL rjb_logEnable = YES;
 
-@protocol ReflectBridgeExport <NSObject>
-// empty protocol
-@end
-
 // the js code to inject
 NSString *ReflectJavascriptBridgeInjectedJS();
 
@@ -38,8 +34,11 @@ BOOL RJB_isInteger(NSString *type);
 // 检测类型编码type是否为无符号整型
 BOOL RJB_isUnsignedInteger(NSString *type);
 
-// 检测类型编码type是否为浮点类型
+// 检测类型编码type是否为单精度浮点类型
 BOOL RJB_isFloat(NSString *type);
+
+// 检测类型编码type是否为双精度浮点类型
+BOOL RJB_isDouble(NSString *type);
 
 // 类型编码type是否为类
 BOOL RJB_isClass(NSString *type);
