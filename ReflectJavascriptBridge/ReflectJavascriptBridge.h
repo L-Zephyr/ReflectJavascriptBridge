@@ -19,9 +19,9 @@
 @end
 
 /**
- JavaScript向
+ JavaScript和原生方法通信时的闭包类型
 
- @param params 参数列表
+ @param params 参数数组
  */
 typedef void (^RJBCallback)(NSArray *params);
 
